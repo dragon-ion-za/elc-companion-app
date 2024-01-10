@@ -12,14 +12,18 @@ class CharacterListPage extends StatelessWidget {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            opacity: 0.5,
-            fit: BoxFit.cover
-          )
+            image: DecorationImage(
+                image: AssetImage('assets/images/background.png'),
+                opacity: 0.5,
+                fit: BoxFit.cover)),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text('Under Construction')],
+          ),
         ),
-        child: Column(children: [Text('Under Construction')],)),
+      ),
     );
   }
-
 }
