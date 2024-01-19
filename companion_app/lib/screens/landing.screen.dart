@@ -1,4 +1,4 @@
-import 'package:elc_companion_app/pages/character_list.dart';
+import 'package:elc_companion_app/screens/character_list.screen.dart';
 import 'package:elc_companion_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,7 @@ class _LandingScreenState extends State<LandingScreen> {
       name = AuthService.instance.idToken?.name;
     });
 
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => const CharacterListPage()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => const CharacterListScreen()));
   }
 
   setLoadingState() {

@@ -13,65 +13,68 @@ class AuthService {
   factory AuthService() => instance;
   AuthService._internal();
 
-  final FlutterAppAuth appAuth = const FlutterAppAuth();
-  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  final FlutterAppAuth _appAuth = const FlutterAppAuth();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Auth0User? profile;
   Auth0IdToken? idToken;
   String? auth0AccessToken;
 
-  Future<String> login() async {
+  Future<(String message, bool success, String? idToken, String? accessToken)> login() async {
     try {
-      final authorizationTokenRequest = AuthorizationTokenRequest(
+      final storedRefreshToken =
+        await _secureStorage.read(key: REFRESH_TOKEN_KEY);
+
+      TokenResponse? result;
+      if (storedRefreshToken == null) {
+        result = await _doLogin();
+      } else {
+        result = await _doRefresh(storedRefreshToken);
+      }
+
+      if (await _handleLoginResult(result)) {
+        return ('Logged in.', true, result!.idToken, result.accessToken);
+      } else {
+        return ('Login result invalid.', false, null, null);
+      }
+    } on PlatformException {
+      return ('User has cancelled or no internet!', false, null, null);
+    } catch (e, s) {
+      print('error on Refresh Token: $e - stack: $s');
+      return ('Unkown Error!', false, null, null);
+    }
+  }
+
+  Future<AuthorizationTokenResponse?> _doLogin() async {
+    final authorizationTokenRequest = AuthorizationTokenRequest(
         AUTH0_CLIENT_ID,
         AUTH0_REDIRECT_URI,
         issuer: AUTH0_ISSUER,
         scopes: ['openid', 'profile', 'offline_access', 'email'],
       );
 
-      final AuthorizationTokenResponse? result =
-          await appAuth.authorizeAndExchangeCode(
+      return await _appAuth.authorizeAndExchangeCode(
         authorizationTokenRequest,
       );
-
-      return await _setLocalVariables(result);
-    } on PlatformException {
-      return 'User has cancelled or no internet!';
-    } catch (e) {
-      return 'Unkown Error!';
-    }
   }
 
-  Future<bool> init() async {
-    final storedRefreshToken = await secureStorage.read(key: REFRESH_TOKEN_KEY);
-
-    if (storedRefreshToken == null) {
-      return false;
-    }
-
-    try {
-      final TokenResponse? result = await appAuth.token(
+  Future<TokenResponse?> _doRefresh(String refreshToken) async {
+    return await _appAuth.token(
         TokenRequest(
           AUTH0_CLIENT_ID,
           AUTH0_REDIRECT_URI,
           issuer: AUTH0_ISSUER,
-          refreshToken: storedRefreshToken,
+          refreshToken: refreshToken,
         ),
       );
-      final String setResult = await _setLocalVariables(result);
-      return setResult == 'Success';
-    } catch (e, s) {
-      print('error on Refresh Token: $e - stack: $s');
-      // logOut() possibly
-      return false;
-    }
   }
 
   Auth0IdToken parseIdToken(String idToken) {
     final parts = idToken.split(r'.');
     assert(parts.length == 3);
 
-    final Map<String, dynamic> json = jsonDecode(utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
+    final Map<String, dynamic> json = jsonDecode(
+        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
 
     return Auth0IdToken.fromJson(json);
   }
@@ -94,25 +97,19 @@ class AuthService {
     }
   }
 
-  Future<String> _setLocalVariables(result) async {
+  Future<bool> _handleLoginResult(result) async {
     final bool isValidResult =
         result != null && result.accessToken != null && result.idToken != null;
 
     if (isValidResult) {
-      auth0AccessToken = result.accessToken;
-      idToken = parseIdToken(result.idToken!);
-      profile = await getUserDetails(result.accessToken!);
-
       if (result.refreshToken != null) {
-        await secureStorage.write(
+        await _secureStorage.write(
           key: REFRESH_TOKEN_KEY,
           value: result.refreshToken,
         );
       }
-
-      return 'Success';
-    } else {
-      return 'Something is Wrong!';
     }
+
+    return isValidResult;
   }
 }
