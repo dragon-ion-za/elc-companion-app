@@ -48,10 +48,13 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
             content: Text(
-          e.toString(),
-        )));
+              e.toString(),
+            ),
+          ),
+        );
       }
     }
 
@@ -85,6 +88,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
               else
                 Center(
                   child: Container(
+                    padding: const EdgeInsets.all(8),
                     width: double.infinity,
                     color: Theme.of(context).colorScheme.primary,
                     child: Column(
@@ -92,9 +96,31 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
                       children: [
                         const Text('Please enter a callsign, Agent.'),
                         TextField(
-                          decoration: const InputDecoration(label: Text('Username')),
+                          decoration:
+                              const InputDecoration(label: Text('Username')),
                           controller: usernameController,
-                        )
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            setLoadingState();
+
+                            final wasRegistered = await ref
+                                .read(authProvider.notifier)
+                                .registerUser(usernameController.text);
+
+                            setState(() {
+                              isProgressing = false;
+                            });
+
+                            if (wasRegistered && context.mounted) {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => const CharacterListScreen()));
+                            }
+                          },
+                          child: const Text('Submit'),
+                        ),
                       ],
                     ),
                   ),

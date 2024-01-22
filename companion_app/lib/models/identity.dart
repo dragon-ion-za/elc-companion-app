@@ -1,14 +1,20 @@
 import 'package:elc_companion_app/models/user.dart';
 
 class Identity {
-  final User user;
-  final String provider;
-  String token;
+  final User? user;
+  String? accessToken;
+  String? idToken;
 
-  Identity(this.user, this.provider) : token = '';
+  Identity(this.user, {this.accessToken, this.idToken});
 
-  Identity.copySetToken(Identity existingUser, String newToken)
-      : user = existingUser.user,
-        provider = existingUser.provider,
-        token = newToken;
+  Identity.withTokens(String overrideAccessToken, String overrideIdToken)
+      : user = null,
+        accessToken = overrideAccessToken,
+        idToken = overrideIdToken;
+
+  Identity.copyWith(
+      User overrideUser, String overrideAccessToken, String overrideIdToken)
+      : user = overrideUser,
+        accessToken = overrideAccessToken,
+        idToken = overrideIdToken;
 }

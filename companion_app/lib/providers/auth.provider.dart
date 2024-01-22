@@ -1,4 +1,5 @@
 import 'package:elc_companion_app/models/identity.dart';
+import 'package:elc_companion_app/models/user.dart';
 import 'package:elc_companion_app/services/api_services/user_api.service.dart';
 import 'package:elc_companion_app/services/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,22 +25,31 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     }
 
     final auth0IdToken = AuthService.instance.parseIdToken(idToken!);
-    final user = await UserApiService().getUser(auth0IdToken.userId);
+    User? user = await UserApiService().getUser(auth0IdToken.userId);
+
+    Identity identity = Identity(user);
+    identity.accessToken = accessToken;
+    identity.idToken = idToken;
+
+    state = identity;
 
     if (user == null) {
       return LoginStatus.newUser;
     }
 
-    Identity identity = Identity(user, auth0IdToken.iss);
-    identity.token = accessToken!;
-
-    state = identity;
-
     return LoginStatus.loggedIn;
   }
 
-  void updateAccessToken(String accessToken) {
-    state = Identity.copySetToken(state!, accessToken);
+  Future<bool> registerUser(String username) async {
+
+    if (state == null) throw Exception('Auth state is NULL!');
+
+    final auth0IdToken = AuthService.instance.parseIdToken(state!.idToken!);
+    await UserApiService().createUser(User(username, auth0IdToken.userId));
+    User? user = await UserApiService().getUser(auth0IdToken.userId);
+    state = Identity.copyWith(user!, state!.accessToken!, state!.idToken!);
+
+    return true;
   }
 }
 

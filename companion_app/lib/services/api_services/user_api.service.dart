@@ -21,4 +21,11 @@ class UserApiService {
     
     return User(rawUser['username'], rawUser['id']);
   }
+
+  Future createUser(User user) async {
+    final url =  Uri.http(_baseUrl, 'users');
+    final response = await http.post(url, headers: { 'Content-Type': 'application/json' }, body: json.encode(user.toJson()));
+
+    if (response.body.isEmpty) throw Exception('Unable to create user. Value returned was null.');
+  }
 }
