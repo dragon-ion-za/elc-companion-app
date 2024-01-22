@@ -3,6 +3,12 @@ import 'package:elc_companion_app/services/api_services/user_api.service.dart';
 import 'package:elc_companion_app/services/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+enum LoginStatus {
+  loggedIn,
+  newUser,
+  loggedOut
+}
+
 class AuthProviderNotifier extends StateNotifier<Identity?> {
   AuthProviderNotifier() : super(null);
 
@@ -10,7 +16,7 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     return state != null;
   }
 
-  Future<bool> loginUser() async {
+  Future<LoginStatus> loginUser() async {
     final (String message, bool success, String? idToken, String? accessToken) = await AuthService.instance.login();
 
     if (!success) {
@@ -21,7 +27,7 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     final user = await UserApiService().getUser(auth0IdToken.userId);
 
     if (user == null) {
-      return false;
+      return LoginStatus.newUser;
     }
 
     Identity identity = Identity(user, auth0IdToken.iss);
@@ -29,7 +35,7 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
 
     state = identity;
 
-    return true;
+    return LoginStatus.loggedIn;
   }
 
   void updateAccessToken(String accessToken) {

@@ -14,21 +14,12 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
   bool isProgressing = false;
   bool isLoggedIn = false;
   String errorMessage = '';
+  final usernameController = TextEditingController();
 
   @override
   void initState() {
     loginAction();
     super.initState();
-  }
-
-  setSuccessAuthState() {
-    setState(() {
-      isProgressing = false;
-      isLoggedIn = true;
-    });
-
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => const CharacterListScreen()));
   }
 
   setLoadingState() {
@@ -41,13 +32,18 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
   Future<void> loginAction() async {
     try {
       setLoadingState();
-      final bool isAuth = await ref.read(authProvider.notifier).loginUser();
-      if (isAuth) {
-        setSuccessAuthState();
-      } else {
-        setState(() {
-          isProgressing = false;
-        });
+      final LoginStatus status =
+          await ref.read(authProvider.notifier).loginUser();
+
+      if (context.mounted) {
+        if (status == LoginStatus.loggedIn) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => const CharacterListScreen()));
+        } else if (status == LoginStatus.newUser) {
+          setState(() {
+            isLoggedIn = true;
+          });
+        }
       }
     } catch (e) {
       if (context.mounted) {
@@ -57,11 +53,11 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
           e.toString(),
         )));
       }
-
-      setState(() {
-        isProgressing = false;
-      });
     }
+
+    setState(() {
+      isProgressing = false;
+    });
   }
 
   @override
@@ -87,9 +83,21 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
                   child: const Text('Login | Register'),
                 )
               else
-                Text(
-                  'Welcome back, Agent.',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                Center(
+                  child: Container(
+                    width: double.infinity,
+                    color: Theme.of(context).colorScheme.primary,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Please enter a callsign, Agent.'),
+                        TextField(
+                          decoration: const InputDecoration(label: Text('Username')),
+                          controller: usernameController,
+                        )
+                      ],
+                    ),
+                  ),
                 )
             ],
           ),
