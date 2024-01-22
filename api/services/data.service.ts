@@ -16,6 +16,18 @@ export class DataService {
         this.collections.users = db.collection<UserModel>('Users');
     }
 
+    public static async saveUser(user: UserModel) : Promise<string> {
+        await this.connectToDb();
+        console.log(user);
+        let result = await this.collections.users?.insertOne(user);
+        
+        if (result?.acknowledged) {
+            return user.id;
+        } else {
+            throw 'Unable to insert user.';
+        }
+    }
+
     public static async getUserById(id: string): Promise<UserModel> {
         await this.connectToDb();
         let user = (await this.collections.users?.findOne({ id: id })) as UserModel;

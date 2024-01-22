@@ -4,8 +4,8 @@ import { UserViewModel } from '../view-models/user.viewmodel';
 import { BaseController } from './base.controller';
 
 export class UsersController extends BaseController<UserModel, UserViewModel> {
-    protected doSave(model: UserModel): Promise<string> {
-        throw new Error('Method not implemented.');
+    protected override async doSave(model: UserModel): Promise<string> {
+        return await DataService.saveUser(model);
     }
     protected doUpdate(model: UserModel): Promise<string> {
         throw new Error('Method not implemented.');
