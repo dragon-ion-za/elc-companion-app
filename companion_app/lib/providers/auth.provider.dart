@@ -1,4 +1,5 @@
 import 'package:elc_companion_app/models/identity.dart';
+import 'package:elc_companion_app/services/api_services/user_api.service.dart';
 import 'package:elc_companion_app/services/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +10,7 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     return state != null;
   }
 
-  void loginUser() async {
+  Future<bool> loginUser() async {
     final (String message, bool success, String? idToken, String? accessToken) = await AuthService.instance.login();
 
     if (!success) {
@@ -17,7 +18,18 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     }
 
     final auth0IdToken = AuthService.instance.parseIdToken(idToken!);
-    Identity identity = Identity();
+    final user = await UserApiService().getUser(auth0IdToken.userId);
+
+    if (user == null) {
+      return false;
+    }
+
+    Identity identity = Identity(user, auth0IdToken.iss);
+    identity.token = accessToken!;
+
+    state = identity;
+
+    return true;
   }
 
   void updateAccessToken(String accessToken) {
@@ -25,4 +37,4 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
   }
 }
 
-final authProvider = StateProvider((ref) => AuthProviderNotifier());
+final authProvider = StateNotifierProvider<AuthProviderNotifier, Identity?>((ref) => AuthProviderNotifier());

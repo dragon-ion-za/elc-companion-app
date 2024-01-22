@@ -1,16 +1,14 @@
-class User {
-  final String username;
-  final String id;
+import 'package:elc_companion_app/models/user.dart';
+
+class Identity {
+  final User user;
   final String provider;
-  final String providerId;
   String token;
 
-  User(this.username, this.id, this.provider, this.providerId) : token = '';
+  Identity(this.user, this.provider) : token = '';
 
-  User.copySetToken(User existingUser, String newToken)
-      : username = existingUser.username,
-        id = existingUser.id,
+  Identity.copySetToken(Identity existingUser, String newToken)
+      : user = existingUser.user,
         provider = existingUser.provider,
-        providerId = existingUser.providerId,
         token = newToken;
 }

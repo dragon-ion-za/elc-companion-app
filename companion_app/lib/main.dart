@@ -7,6 +7,9 @@ void main() {
   runApp(
     ProviderScope(
       child: MaterialApp(
+        onGenerateRoute: (settings) {
+          
+        },
         theme: lightTheme,
         darkTheme: darkTheme,
         home: const LandingScreen(),

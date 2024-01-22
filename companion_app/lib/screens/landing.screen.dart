@@ -1,23 +1,23 @@
+import 'package:elc_companion_app/providers/auth.provider.dart';
 import 'package:elc_companion_app/screens/character_list.screen.dart';
-import 'package:elc_companion_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LandingScreen extends StatefulWidget {
+class LandingScreen extends ConsumerStatefulWidget {
   const LandingScreen({super.key});
 
   @override
-  State<LandingScreen> createState() => _LandingScreenState();
+  ConsumerState<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _LandingScreenState extends ConsumerState<LandingScreen> {
   bool isProgressing = false;
   bool isLoggedIn = false;
   String errorMessage = '';
-  String? name;
 
   @override
   void initState() {
-    initAction();
+    loginAction();
     super.initState();
   }
 
@@ -25,10 +25,10 @@ class _LandingScreenState extends State<LandingScreen> {
     setState(() {
       isProgressing = false;
       isLoggedIn = true;
-      name = AuthService.instance.idToken?.name;
     });
 
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => const CharacterListScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (ctx) => const CharacterListScreen()));
   }
 
   setLoadingState() {
@@ -39,24 +39,25 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   Future<void> loginAction() async {
-    setLoadingState();
-    final message = await AuthService.instance.login();
-    if (message == 'Success') {
-      setSuccessAuthState();
-    } else {
-      setState(() {
-        isProgressing = false;
-        errorMessage = message;
-      });
-    }
-  }
+    try {
+      setLoadingState();
+      final bool isAuth = await ref.read(authProvider.notifier).loginUser();
+      if (isAuth) {
+        setSuccessAuthState();
+      } else {
+        setState(() {
+          isProgressing = false;
+        });
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          e.toString(),
+        )));
+      }
 
-  initAction() async {
-    setLoadingState();
-    final bool isAuth = await AuthService.instance.init();
-    if (isAuth) {
-      setSuccessAuthState();
-    } else {
       setState(() {
         isProgressing = false;
       });
@@ -65,31 +66,33 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/background.png'),
-              opacity: 0.5,
-              fit: BoxFit.cover)),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (isProgressing)
-              const CircularProgressIndicator()
-            else if (!isLoggedIn)
-              TextButton(
-                onPressed: loginAction,
-                child: const Text('Login | Register'),
-              )
-            else
-              Text(
-                'Welcome back, Agent.',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )
-          ],
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/background.png'),
+                opacity: 0.5,
+                fit: BoxFit.cover)),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isProgressing)
+                const CircularProgressIndicator()
+              else if (!isLoggedIn)
+                TextButton(
+                  onPressed: loginAction,
+                  child: const Text('Login | Register'),
+                )
+              else
+                Text(
+                  'Welcome back, Agent.',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                )
+            ],
+          ),
         ),
       ),
     );
