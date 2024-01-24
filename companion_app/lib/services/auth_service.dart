@@ -20,10 +20,11 @@ class AuthService {
   Auth0IdToken? idToken;
   String? auth0AccessToken;
 
-  Future<(String message, bool success, String? idToken, String? accessToken)> login() async {
+  Future<(String message, bool success, String? idToken, String? accessToken)>
+      login() async {
     try {
       final storedRefreshToken =
-        await _secureStorage.read(key: REFRESH_TOKEN_KEY);
+          await _secureStorage.read(key: REFRESH_TOKEN_KEY);
 
       TokenResponse? result;
       if (storedRefreshToken == null) {
@@ -47,26 +48,24 @@ class AuthService {
 
   Future<AuthorizationTokenResponse?> _doLogin() async {
     final authorizationTokenRequest = AuthorizationTokenRequest(
-        AUTH0_CLIENT_ID,
-        AUTH0_REDIRECT_URI,
-        issuer: AUTH0_ISSUER,
-        scopes: ['openid', 'profile', 'offline_access', 'email'],
-      );
+      AUTH0_CLIENT_ID,
+      AUTH0_REDIRECT_URI,
+      issuer: AUTH0_ISSUER,
+      scopes: ['openid', 'profile', 'offline_access', 'email', 'api'],
+      additionalParameters: {'audience': API_AUDIENCE},
+    );
 
-      return await _appAuth.authorizeAndExchangeCode(
-        authorizationTokenRequest,
-      );
+    return await _appAuth.authorizeAndExchangeCode(
+      authorizationTokenRequest,
+    );
   }
 
   Future<TokenResponse?> _doRefresh(String refreshToken) async {
     return await _appAuth.token(
-        TokenRequest(
-          AUTH0_CLIENT_ID,
-          AUTH0_REDIRECT_URI,
+      TokenRequest(AUTH0_CLIENT_ID, AUTH0_REDIRECT_URI,
           issuer: AUTH0_ISSUER,
-          refreshToken: refreshToken,
-        ),
-      );
+          refreshToken: refreshToken),
+    );
   }
 
   Auth0IdToken parseIdToken(String idToken) {
@@ -107,6 +106,8 @@ class AuthService {
           key: REFRESH_TOKEN_KEY,
           value: result.refreshToken,
         );
+      } else {
+        _secureStorage.delete(key: REFRESH_TOKEN_KEY);
       }
     }
 
