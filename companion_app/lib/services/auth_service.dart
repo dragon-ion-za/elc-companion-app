@@ -64,7 +64,8 @@ class AuthService {
     return await _appAuth.token(
       TokenRequest(AUTH0_CLIENT_ID, AUTH0_REDIRECT_URI,
           issuer: AUTH0_ISSUER,
-          refreshToken: refreshToken),
+          refreshToken: refreshToken,
+          additionalParameters: {'audience': API_AUDIENCE}),
     );
   }
 
