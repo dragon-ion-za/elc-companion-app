@@ -1,0 +1,11 @@
+{
+    "port": 5005,
+    "oauth": {
+        "audience": "",
+        "baseUrl": "",
+        "algorithm": ""
+    },
+    "connectionStrings": {
+        "elcContext": "mongodb://localhost:27017/"
+    }
+}
