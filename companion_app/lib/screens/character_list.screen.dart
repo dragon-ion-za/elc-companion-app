@@ -1,5 +1,6 @@
 import 'package:elc_companion_app/models/character.dart';
 import 'package:elc_companion_app/providers/character-list.provider.dart';
+import 'package:elc_companion_app/screens/character_modification.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,10 +25,23 @@ class CharacterListScreen extends ConsumerWidget {
                 fit: BoxFit.cover)),
         child: switch (characters) {
           AsyncLoading() => const CircularProgressIndicator(),
-          AsyncError() =>  const Center(child:  Text('Oops..'),),
+          AsyncError() => const Center(
+              child: Text('Oops..'),
+            ),
           AsyncValue<List<Character>>(:final value) =>
             value == null || value.isEmpty
-                ? const Center(child:  Text('No data'),)
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Text('You have no characters yet'),
+                        IconButton.filled(onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const CharacterModificationScreen()));
+                        }, icon: const Icon(Icons.add),),
+                      ],
+                    ),
+                  )
                 : ListView.builder(
                     itemCount: value.length,
                     itemBuilder: (ctx, index) => ListTile(
