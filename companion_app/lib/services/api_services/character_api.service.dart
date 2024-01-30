@@ -32,16 +32,15 @@ class CharacterApiService extends BaseApiService {
       return [];
     }
 
-    final Map<String, dynamic> rawCharacters = json.decode(response.body);
+    final List<dynamic> list = json.decode(response.body);
 
-    if (rawCharacters.isEmpty) return [];
+    if (list.isEmpty) return [];
 
-    final List<Character> list = [];
-
-    for (String rawCharacter in rawCharacters.keys) {
-      list.add(Character.fromJson(rawCharacters[rawCharacter]));
+    final List<Character> characters = [];
+    for(final character in list) {
+      characters.add(Character.fromJson(character));
     }
-
-    return list;
+    
+    return characters;
   }
 }
