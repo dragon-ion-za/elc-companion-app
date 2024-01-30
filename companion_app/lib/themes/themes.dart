@@ -8,6 +8,7 @@ final lightTheme = ThemeData(
     backgroundColor: _lightColorScheme.primary
   ),
   scaffoldBackgroundColor: _lightColorScheme.onPrimaryContainer,
-  textTheme: ThemeData().textTheme.copyWith().apply(bodyColor: Colors.white)
+  textTheme: ThemeData().textTheme.copyWith().apply(bodyColor: _lightColorScheme.onPrimaryContainer),
+  dropdownMenuTheme: DropdownMenuThemeData(menuStyle: MenuStyle(backgroundColor: MaterialStatePropertyAll<Color>(_lightColorScheme.secondary)))
 ).copyWith();
 final darkTheme = ThemeData.dark().copyWith();

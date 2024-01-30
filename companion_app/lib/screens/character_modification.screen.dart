@@ -1,4 +1,7 @@
+import 'package:elc_companion_app/pages/character_equipment.page.dart';
+import 'package:elc_companion_app/pages/character_skills.page.dart';
 import 'package:elc_companion_app/pages/character_stats.page.dart';
+import 'package:elc_companion_app/pages/character_talents.page.dart';
 import 'package:flutter/material.dart';
 
 class CharacterModificationScreen extends StatelessWidget {
@@ -7,13 +10,12 @@ class CharacterModificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Modify Character'),
         ),
         body: Container(
-          width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -21,7 +23,10 @@ class CharacterModificationScreen extends StatelessWidget {
                   opacity: 0.5,
                   fit: BoxFit.cover)),
           child: TabBarView(children: [
-            CharacterStatsPage()
+            CharacterStatsPage(),
+            CharacterTalentsPage(),
+            CharacterEquipmentPage(),
+            CharacterSkillsPage()
           ],),
         ),
         bottomNavigationBar: TabBar(
@@ -30,7 +35,22 @@ class CharacterModificationScreen extends StatelessWidget {
               child: Tab(
                 icon: Icon(Icons.account_circle),
               ),
-            )
+            ),
+            Badge(
+              child: Tab(
+                icon: Icon(Icons.star),
+              ),
+            ),
+            Badge(
+              child: Tab(
+                icon: Icon(Icons.shield),
+              ),
+            ),
+            Badge(
+              child: Tab(
+                icon: Icon(Icons.account_tree),
+              ),
+            ),
           ],
         ),
       ),
