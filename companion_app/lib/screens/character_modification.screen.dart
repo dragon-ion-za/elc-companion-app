@@ -22,7 +22,8 @@ class CharacterModificationScreen extends StatelessWidget {
                   image: AssetImage('assets/images/background.png'),
                   opacity: 0.5,
                   fit: BoxFit.cover)),
-          child: TabBarView(children: [
+          child: TabBarView(physics: const NeverScrollableScrollPhysics(),
+            children: [
             CharacterStatsPage(),
             CharacterTalentsPage(),
             CharacterEquipmentPage(),
