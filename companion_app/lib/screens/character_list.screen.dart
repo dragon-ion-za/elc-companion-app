@@ -31,15 +31,19 @@ class CharacterListScreen extends ConsumerWidget {
           AsyncValue<List<Character>>(:final value) =>
             value == null || value.isEmpty
                 ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const Text('You have no characters yet'),
-                        IconButton.filled(onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const CharacterModificationScreen()));
-                        }, icon: const Icon(Icons.add),),
-                      ],
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondaryContainer),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('You have no characters yet'),
+                          IconButton.filled(onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => const CharacterModificationScreen()));
+                          }, icon: const Icon(Icons.add),),
+                        ],
+                      ),
                     ),
                   )
                 : ListView.builder(
