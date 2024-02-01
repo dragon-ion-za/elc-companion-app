@@ -28,14 +28,14 @@ class CharacterStatsPage extends ConsumerWidget {
               decoration: InputDecoration(labelText: 'Race'),
               value: null,
               items: lookup.value!.races
-                  .map((e) => DropdownMenuItem(child: Text(e.name)))
+                  .map((e) => DropdownMenuItem(child: Text(e.name), value: e.id,))
                   .toList(),
               onChanged: (item) {}),
           DropdownButtonFormField(
               decoration: InputDecoration(labelText: 'Faction'),
               value: null,
               items: lookup.value!.factions
-                  .map((e) => DropdownMenuItem(child: Text(e.name)))
+                  .map((e) => DropdownMenuItem(child: Text(e.name), value: e.id))
                   .toList(),
               onChanged: (item) {}),
           DropdownButtonFormField(
