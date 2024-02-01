@@ -1,6 +1,7 @@
 {
     "lookup": [
         {
+            "id": "rc_earthling",
             "name": "Earthling"
         }
     ]

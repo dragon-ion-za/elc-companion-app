@@ -1,0 +1,20 @@
+{
+    "lookup": [
+        {
+            "id": "era_farpast",
+            "name": "Far Past"
+        },
+        {
+            "id": "era_past",
+            "name": "Past"
+        },
+        {
+            "id": "era_nearfuture",
+            "name": "Near Future"
+        },
+        {
+            "id": "era_farfuture",
+            "name": "Far Future"
+        }
+    ]
+}
