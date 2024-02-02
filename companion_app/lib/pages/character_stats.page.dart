@@ -23,7 +23,7 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
 
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
         child: Form(
           key: form,

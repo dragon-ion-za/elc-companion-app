@@ -39,7 +39,11 @@ class _CharacterModificationScreenState extends State<CharacterModificationScree
                 _isStatsPageValid = isValid;
               });
             }),
-            CharacterTalentsPage(),
+            CharacterTalentsPage((bool isValid) {
+              setState(() {
+                _isTalentsPageValid = isValid;
+              });
+            }),
             CharacterEquipmentPage(),
             CharacterSkillsPage()
           ],),
@@ -53,6 +57,7 @@ class _CharacterModificationScreenState extends State<CharacterModificationScree
               ),
             ),
             Badge(
+              isLabelVisible: !_isTalentsPageValid, 
               child: Tab(
                 icon: Icon(Icons.star),
               ),
