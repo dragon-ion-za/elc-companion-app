@@ -4,8 +4,18 @@ import 'package:elc_companion_app/pages/character_stats.page.dart';
 import 'package:elc_companion_app/pages/character_talents.page.dart';
 import 'package:flutter/material.dart';
 
-class CharacterModificationScreen extends StatelessWidget {
+class CharacterModificationScreen extends StatefulWidget {
   const CharacterModificationScreen({super.key});
+
+  @override
+  State<CharacterModificationScreen> createState() => _CharacterModificationScreenState();
+}
+
+class _CharacterModificationScreenState extends State<CharacterModificationScreen> {
+  bool _isStatsPageValid = false;
+  bool _isTalentsPageValid = false;
+  bool _isEquipmentPageValid = false;
+  bool _isSkillsPageBalid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +34,11 @@ class CharacterModificationScreen extends StatelessWidget {
                   fit: BoxFit.cover)),
           child: TabBarView(physics: const NeverScrollableScrollPhysics(),
             children: [
-            CharacterStatsPage(),
+            CharacterStatsPage((bool isValid) {
+              setState(() {
+                _isStatsPageValid = isValid;
+              });
+            }),
             CharacterTalentsPage(),
             CharacterEquipmentPage(),
             CharacterSkillsPage()
@@ -33,6 +47,7 @@ class CharacterModificationScreen extends StatelessWidget {
         bottomNavigationBar: TabBar(
           tabs: [
             Badge(
+              isLabelVisible: !_isStatsPageValid,  
               child: Tab(
                 icon: Icon(Icons.account_circle),
               ),
