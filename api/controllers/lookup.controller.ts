@@ -25,6 +25,6 @@ export class LookupController {
 
     private getLookupDate = (lookupSetName: string): LookupViewModel[] => {
         let json = readFile(`${config.get("dataFileRoot")}${lookupSetName}.json`);
-        return json.lookup.map((x: any) => new LookupViewModel(x.id, x.name)) as LookupViewModel[];
+        return json.lookup.map((x: any) => new LookupViewModel(x.id, x.name, x.score ?? 0)) as LookupViewModel[];
     }
 }
