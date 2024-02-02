@@ -5,8 +5,9 @@ part 'lookup.g.dart';
 class Lookup {
   final String id;
   final String name;
+  final String? blurb;
 
-  Lookup(this.id, this.name);
+  Lookup(this.id, this.name, this.blurb);
 
   factory Lookup.fromJson(Map<String, dynamic> json) => _$LookupFromJson(json);
 

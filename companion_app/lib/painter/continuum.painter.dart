@@ -4,13 +4,14 @@ import 'package:elc_companion_app/models/continuum-skill-node.dart';
 import 'package:flutter/material.dart';
 
 class ContinuumPainter extends CustomPainter {
-  const ContinuumPainter(this.context, this.offset, this.skills, {
+  const ContinuumPainter(this.context, this.offset, this.zoom, this.skills, {
     this.isAntiAlias = true,
   });
   final BuildContext context;
   final bool isAntiAlias;
   final List<ContinuumSkillNode> skills;
   final Offset offset;
+  final double zoom;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -23,10 +24,10 @@ class ContinuumPainter extends CustomPainter {
     canvas.save();
     Paint drawingPaint = Paint()..color = Theme.of(context).colorScheme.tertiary;
     for (final skill in skills) {
-      final currentPosition = skill.position + offset;
+      final currentPosition = (skill.position + offset) * zoom;
 
       // Draw Continuum node with label
-      canvas.drawCircle(currentPosition, 64, drawingPaint);
+      canvas.drawCircle(currentPosition, 64 * zoom, drawingPaint);
       final label = TextSpan(text: skill.name, style: TextStyle(color: Colors.white));
       final textPainter = TextPainter(text: label, textDirection: TextDirection.ltr);
       textPainter.layout();
@@ -44,7 +45,7 @@ class ContinuumPainter extends CustomPainter {
         drawAbilityNode(canvas, drawingPaint, Offset(x, y));
       }
     }
-
+    
     canvas.restore();
   }
 

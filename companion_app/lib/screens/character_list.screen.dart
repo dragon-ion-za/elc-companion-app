@@ -10,7 +10,7 @@ class CharacterListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final characters = ref.watch(characterListProvider);
-    final lookupCache = ref.watch(loockupCacheProvider);
+    final lookupCache = ref.watch(lookupCacheProvider);
 
     return Scaffold(
       appBar: AppBar(

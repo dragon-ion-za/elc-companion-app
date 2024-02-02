@@ -7,7 +7,7 @@ class CharacterStatsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lookup = ref.watch(loockupCacheProvider);
+    final lookup = ref.watch(lookupCacheProvider);
 
     return SingleChildScrollView(
       child: Container(
@@ -40,7 +40,10 @@ class CharacterStatsPage extends ConsumerWidget {
               onChanged: (item) {}),
           DropdownButtonFormField(
               decoration: InputDecoration(labelText: 'Era'),
-              items: [DropdownMenuItem(child: Text('Past'))],
+              value: null,
+              items: lookup.value!.eras
+                  .map((e) => DropdownMenuItem(child: Text(e.name), value: e.id))
+                  .toList(),
               onChanged: (item) {}),
         ]),
       ),

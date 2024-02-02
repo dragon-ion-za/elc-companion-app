@@ -10,27 +10,27 @@ class LookupApiService extends BaseApiService {
   final String _apiBaseUrl = 'lookup/';
 
   Future<List<Lookup>> getRaces() async {
-    final url = Uri.http(super.baseUrl, '${_apiBaseUrl}races');
-    final response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 404) {
-      return [];
-    }
-
-    final List<dynamic> list = json.decode(response.body);
-
-    if (list.isEmpty) return [];
-
-    final List<Lookup> races = [];
-    for(final race in list) {
-      races.add(Lookup.fromJson(race));
-    }
-    
-    return races;
+    return await _getLookup('races');
   }
 
   Future<List<Lookup>> getFactions() async {
-    final url = Uri.http(super.baseUrl, '${_apiBaseUrl}factions');
+    return await _getLookup('factions');
+  }
+
+  Future<List<Lookup>> getEras() async {
+    return await _getLookup('eras');
+  }
+
+  Future<List<Lookup>> getTalentsFlaws() async {
+    return await _getLookup('talentsFlaws');
+  }
+
+  Future<List<Lookup>> getSkills() async {
+    return await _getLookup('skills');
+  }
+
+  Future<List<Lookup>> _getLookup(String lookupPath) async {
+    final url = Uri.http(super.baseUrl, '${_apiBaseUrl}${lookupPath}');
     final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 404) {
@@ -41,11 +41,11 @@ class LookupApiService extends BaseApiService {
 
     if (list.isEmpty) return [];
 
-    final List<Lookup> factions = [];
-    for(final faction in list) {
-      factions.add(Lookup.fromJson(faction));
+    final List<Lookup> lookupList = [];
+    for(final lookupItem in list) {
+      lookupList.add(Lookup.fromJson(lookupItem));
     }
     
-    return factions;
+    return lookupList;
   }
 }
