@@ -12,7 +12,7 @@ export abstract class BaseController<TModel extends Document, TViewModel> {
 
     public get = async (req: any, res: any, next: any) => {
         try {
-            if (this.dataService == null) this.initDataService(req.auth.payload.sub);
+            if (this.dataService == null) this.initDataService();
 
             let data: TModel[] = await this.dataService!.queryData({});
             let viewData: TViewModel[] = [];
@@ -25,7 +25,7 @@ export abstract class BaseController<TModel extends Document, TViewModel> {
         }
     }
 
-    private initDataService(userId: string) {
-        this.dataService = new GuardedDataService(this.collectionName, userId);
+    private initDataService() {
+        this.dataService = new DataService(this.collectionName);
     }
 }
