@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:elc_companion_app/models/item.dart';
 import 'package:elc_companion_app/models/lookup.dart';
 import 'package:elc_companion_app/services/api_services/base.service.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +24,26 @@ class LookupApiService extends BaseApiService {
 
   Future<List<Lookup>> getTalentsFlaws() async {
     return await _getLookup('talentsFlaws');
+  }
+
+  Future<List<Item>> getItems() async {
+    final url = Uri.http(super.baseUrl, '${_apiBaseUrl}items');
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 404) {
+      return [];
+    }
+
+    final List<dynamic> list = json.decode(response.body);
+
+    if (list.isEmpty) return [];
+
+    final List<Item> lookupList = [];
+    for(final lookupItem in list) {
+      lookupList.add(Item.fromJson(lookupItem));
+    }
+    
+    return lookupList;
   }
 
   Future<List<Lookup>> getSkills() async {

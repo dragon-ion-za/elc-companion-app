@@ -21,7 +21,7 @@ class CharacterApiService extends BaseApiService {
 
     if (rawCharacter.isEmpty) return null;
 
-    return Character(rawCharacter['id']);
+    return Character.fromJson(rawCharacter);
   }
   
   Future<List<Character>> getCharacters() async {

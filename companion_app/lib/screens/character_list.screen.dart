@@ -58,7 +58,7 @@ class CharacterListScreen extends ConsumerWidget {
                 : ListView.builder(
                     itemCount: value.length,
                     itemBuilder: (ctx, index) => ListTile(
-                      title: Text(value[index].id),
+                      title: Text(value[index].name),
                     ),
                   );
           }

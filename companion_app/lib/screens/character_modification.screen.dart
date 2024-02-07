@@ -2,16 +2,18 @@ import 'package:elc_companion_app/pages/character_equipment.page.dart';
 import 'package:elc_companion_app/pages/character_skills.page.dart';
 import 'package:elc_companion_app/pages/character_stats.page.dart';
 import 'package:elc_companion_app/pages/character_talents.page.dart';
+import 'package:elc_companion_app/providers/character.provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CharacterModificationScreen extends StatefulWidget {
+class CharacterModificationScreen extends ConsumerStatefulWidget {
   const CharacterModificationScreen({super.key});
 
   @override
-  State<CharacterModificationScreen> createState() => _CharacterModificationScreenState();
+  ConsumerState<CharacterModificationScreen> createState() => _CharacterModificationScreenState();
 }
 
-class _CharacterModificationScreenState extends State<CharacterModificationScreen> {
+class _CharacterModificationScreenState extends ConsumerState<CharacterModificationScreen> {
   bool _isStatsPageValid = false;
   bool _isTalentsPageValid = false;
   bool _isEquipmentPageValid = false;
@@ -19,6 +21,7 @@ class _CharacterModificationScreenState extends State<CharacterModificationScree
 
   @override
   Widget build(BuildContext context) {
+    final char = ref.watch(characterProvider);
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -34,11 +37,7 @@ class _CharacterModificationScreenState extends State<CharacterModificationScree
                   fit: BoxFit.cover)),
           child: TabBarView(physics: const NeverScrollableScrollPhysics(),
             children: [
-            CharacterStatsPage((bool isValid) {
-              setState(() {
-                _isStatsPageValid = isValid;
-              });
-            }),
+            CharacterStatsPage(),
             CharacterTalentsPage((bool isValid) {
               setState(() {
                 _isTalentsPageValid = isValid;
@@ -51,7 +50,8 @@ class _CharacterModificationScreenState extends State<CharacterModificationScree
         bottomNavigationBar: TabBar(
           tabs: [
             Badge(
-              isLabelVisible: !_isStatsPageValid,  
+              key: UniqueKey(),
+              isLabelVisible: !char!.areStatsValid,  
               child: Tab(
                 icon: Icon(Icons.account_circle),
               ),
