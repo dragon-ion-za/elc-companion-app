@@ -5,6 +5,10 @@
         "description": "",
         "attributes": [
             {
+                "type": "cost",
+                "value": 1
+            },
+            {
                 "type": "mod",
                 "slot": "barrel"
             }
@@ -21,6 +25,10 @@
         "name": "Rifle (AR Platform)",
         "description": "",
         "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
             {
                 "type": "mod",
                 "slot": "barrel"
@@ -39,6 +47,10 @@
         "description": "",
         "attributes": [
             {
+                "type": "cost",
+                "value": 1
+            },
+            {
                 "type": "utility",
                 "effectId": "efct_togglenightvision"
             }
@@ -55,6 +67,10 @@
         "name": "Basic Grenade Belt",
         "description": "",
         "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
             {
                 "type": "container",
                 "slot": "grenade"
@@ -73,6 +89,10 @@
         "description": "",
         "attributes": [
             {
+                "type": "cost",
+                "value": 1
+            },
+            {
                 "type": "container",
                 "slot": "intel"
             }
@@ -90,6 +110,10 @@
         "description": "",
         "attributes": [
             {
+                "type": "cost",
+                "value": 1
+            },
+            {
                 "type": "armour",
                 "value": 1
             }
@@ -106,6 +130,10 @@
         "name": "Tacticle Knife",
         "description": "",
         "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            }
         ],
         "containers": [
             {
@@ -119,6 +147,10 @@
         "name": "Basic Stims Belt",
         "description": "",
         "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
             {
                 "type": "container",
                 "slot": "stims"

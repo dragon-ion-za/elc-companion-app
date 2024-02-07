@@ -8,11 +8,10 @@ class Item {
   final String id;
   final String name;
   final String? description;
-  final num cost;
   final List<Attribute> attributes;
   final List<Container> containers;
 
-  Item(this.id, this.name, this.description, this.cost, this.attributes, this.containers);
+  Item(this.id, this.name, this.description, this.attributes, this.containers);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 

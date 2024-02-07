@@ -14,10 +14,6 @@ class CharacterModificationScreen extends ConsumerStatefulWidget {
 }
 
 class _CharacterModificationScreenState extends ConsumerState<CharacterModificationScreen> {
-  bool _isStatsPageValid = false;
-  bool _isTalentsPageValid = false;
-  bool _isEquipmentPageValid = false;
-  bool _isSkillsPageBalid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +61,7 @@ class _CharacterModificationScreenState extends ConsumerState<CharacterModificat
               ),
             ),
             Badge(
+              isLabelVisible: !charNotifier.isEquipmentValid(), 
               child: Tab(
                 icon: Icon(Icons.shield),
               ),

@@ -10,7 +10,8 @@ class CharacterTalentsPage extends ConsumerStatefulWidget {
   final Function(bool isValid) onValidate;
 
   @override
-  ConsumerState<CharacterTalentsPage> createState() => _CharacterTalentsPageState();
+  ConsumerState<CharacterTalentsPage> createState() =>
+      _CharacterTalentsPageState();
 }
 
 class _CharacterTalentsPageState extends ConsumerState<CharacterTalentsPage> {
@@ -19,7 +20,12 @@ class _CharacterTalentsPageState extends ConsumerState<CharacterTalentsPage> {
   @override
   void initState() {
     super.initState();
-    _talentsFlaws = ref.read(lookupCacheProvider).value!.talentsFlaws.map((e) => LookupItem(e.id, e.name, e.blurb, e.score)).toList();
+    _talentsFlaws = ref
+        .read(lookupCacheProvider)
+        .value!
+        .talentsFlaws
+        .map((e) => LookupItem(e.id, e.name, e.blurb, e.score))
+        .toList();
   }
 
   @override
@@ -33,17 +39,25 @@ class _CharacterTalentsPageState extends ConsumerState<CharacterTalentsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 400,
-            child: ListView.builder(itemCount: _talentsFlaws.length, itemBuilder: (ctx, index) => ListTile(
-                  title: Text(_talentsFlaws[index].name),
-                  subtitle: Text(_talentsFlaws[index].blurb ?? ''),
-                  trailing: Switch(value: char!.talentIds.any((x) => x == _talentsFlaws[index].id), onChanged: (value) {
-                    charNotifier.toggleTalent(_talentsFlaws[index].id, value);
-                  }),
-                )),
+          SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 256,
+              child: ListView.builder(
+                  itemCount: _talentsFlaws.length,
+                  itemBuilder: (ctx, index) => ListTile(
+                        title: Text(_talentsFlaws[index].name),
+                        subtitle: Text(_talentsFlaws[index].blurb ?? ''),
+                        trailing: Switch(
+                            value: char!.talentIds
+                                .any((x) => x == _talentsFlaws[index].id),
+                            onChanged: (value) {
+                              charNotifier.toggleTalent(
+                                  _talentsFlaws[index].id, value);
+                            }),
+                      )),
+            ),
           ),
-          Text('Points remaining: ${charNotifier.getTalentPoints()}')
+          Center(child: Text('Points remaining: ${charNotifier.getTalentPoints()}'))
         ],
       ),
     );

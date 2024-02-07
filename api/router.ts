@@ -15,4 +15,5 @@ router.get('/lookup/races', new LookupController().getRaces);
 router.get('/lookup/factions', new LookupController().getFactions);
 router.get('/lookup/eras', new LookupController().getEras);
 router.get('/lookup/talentsFlaws', new LookupController().getTalentsFlaws);
+router.get('/lookup/items', new LookupController().getItems);
 router.get('/lookup/skills', new LookupController().getSkills);

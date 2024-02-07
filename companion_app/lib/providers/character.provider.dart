@@ -1,4 +1,5 @@
 import 'package:elc_companion_app/models/character.dart';
+import 'package:elc_companion_app/models/equipment.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,7 +9,7 @@ class CharacterNotifier extends StateNotifier<Character> {
   final Ref _ref;
 
   void updateCharacterStats({String? name, String? bio, String? raceId, String? factionId, String? eraId}) {
-    state = Character(state.id, name ?? state.name, bio ?? state.bio, raceId ?? state.raceId, factionId ?? state.factionId, eraId ?? state.eraId, state.talentIds, state.equipmentIds, state.skillIds);
+    state = Character(state.id, name ?? state.name, bio ?? state.bio, raceId ?? state.raceId, factionId ?? state.factionId, eraId ?? state.eraId, state.talentIds, state.equipment, state.skillIds);
   }
 
   void toggleTalent(String talentId, bool value) {
@@ -20,11 +21,33 @@ class CharacterNotifier extends StateNotifier<Character> {
       talents.remove(talentId);
     }
 
-    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, talents, state.equipmentIds, state.skillIds);
+    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, talents, state.equipment, state.skillIds);
+  }
+
+  void updateEquipment(String itemId, String containerId, String slotId) {
+    var equipment = state.equipment;
+
+    if (itemId == '0') {
+      equipment = equipment.where((x) => x.containerId != containerId && x.slotId != slotId).toList();
+    } else {
+      final index = equipment.indexWhere((x) => x.containerId == containerId && x.slotId == slotId);
+
+      if (index == -1) {
+        equipment.add(Equipment(itemId, containerId, slotId));
+      } else {
+        equipment[index] = Equipment(itemId, containerId, slotId);
+      }
+    }
+
+    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, state.talentIds, equipment, state.skillIds);
   }
 
   bool areTalentsValid() {
     return getTalentPoints() == 0;
+  }
+
+  bool isEquipmentValid() {
+    return getRequisitionPoints() >= 0 && state.equipment.isNotEmpty;
   }
 
   num getTalentPoints() {
@@ -41,11 +64,12 @@ class CharacterNotifier extends StateNotifier<Character> {
 
   num getRequisitionPoints() {
     final items = _ref.read(lookupCacheProvider).value!.items;
-    final selectedItems = items.where((x) => state.equipmentIds.contains(x.id)).toList();
+    final selectedItems = items.where((x) => state.equipment.any((y) => x.id == y.itemId)).toList();
     num requisitionPoints = 10;
 
     for (var selectedItem in selectedItems) {
-      requisitionPoints -= selectedItem.cost;
+      final costAttribute = selectedItem.attributes.firstWhere((x) => x.type == 'cost');
+      requisitionPoints -= costAttribute.value ?? 0;
     }
 
     return requisitionPoints;
