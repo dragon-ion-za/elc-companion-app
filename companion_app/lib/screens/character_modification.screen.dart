@@ -22,6 +22,8 @@ class _CharacterModificationScreenState extends ConsumerState<CharacterModificat
   @override
   Widget build(BuildContext context) {
     final char = ref.watch(characterProvider);
+    final charNotifier = ref.read(characterProvider.notifier);
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -57,7 +59,7 @@ class _CharacterModificationScreenState extends ConsumerState<CharacterModificat
               ),
             ),
             Badge(
-              isLabelVisible: !_isTalentsPageValid, 
+              isLabelVisible: !charNotifier.areTalentsValid(), 
               child: Tab(
                 icon: Icon(Icons.star),
               ),

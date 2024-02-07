@@ -1,4 +1,5 @@
 import 'package:elc_companion_app/models/lookup-item.dart';
+import 'package:elc_companion_app/providers/character.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,6 @@ class CharacterTalentsPage extends ConsumerStatefulWidget {
 
 class _CharacterTalentsPageState extends ConsumerState<CharacterTalentsPage> {
   List<LookupItem> _talentsFlaws = [];
-  num _currentTalentPoints = 2; // TODO: Read from rules engine
 
   @override
   void initState() {
@@ -24,28 +24,26 @@ class _CharacterTalentsPageState extends ConsumerState<CharacterTalentsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final charNotifier = ref.watch(characterProvider.notifier);
+    final char = ref.watch(characterProvider);
+
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             height: 400,
             child: ListView.builder(itemCount: _talentsFlaws.length, itemBuilder: (ctx, index) => ListTile(
                   title: Text(_talentsFlaws[index].name),
                   subtitle: Text(_talentsFlaws[index].blurb ?? ''),
-                  trailing: Switch(value: _talentsFlaws[index].isSelected, onChanged: (value) {
-                    setState(() {
-                      _currentTalentPoints += _talentsFlaws[index].score * (value ? -1 : 1);
-                      _talentsFlaws[index].isSelected = value;
-                    });
-
-                    widget.onValidate(_currentTalentPoints <= 0);
+                  trailing: Switch(value: char!.talentIds.any((x) => x == _talentsFlaws[index].id), onChanged: (value) {
+                    charNotifier.toggleTalent(_talentsFlaws[index].id, value);
                   }),
                 )),
           ),
-          Text('Points remaining: $_currentTalentPoints')
+          Text('Points remaining: ${charNotifier.getTalentPoints()}')
         ],
       ),
     );

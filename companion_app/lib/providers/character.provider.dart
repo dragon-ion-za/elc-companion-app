@@ -11,6 +11,22 @@ class CharacterNotifier extends StateNotifier<Character> {
     state = Character(state.id, name ?? state.name, bio ?? state.bio, raceId ?? state.raceId, factionId ?? state.factionId, eraId ?? state.eraId, state.talentIds, state.equipmentIds, state.skillIds);
   }
 
+  void toggleTalent(String talentId, bool value) {
+    var talents = state.talentIds;
+
+    if (value) {
+        talents.add(talentId);
+    } else {
+      talents.remove(talentId);
+    }
+
+    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, talents, state.equipmentIds, state.skillIds);
+  }
+
+  bool areTalentsValid() {
+    return getTalentPoints() == 0;
+  }
+
   num getTalentPoints() {
     final talentsFlaws = _ref.read(lookupCacheProvider).value!.talentsFlaws;
     final selectedTalents = talentsFlaws.where((x) => state.talentIds.contains(x.id)).toList();
