@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CharacterTalentsPage extends ConsumerStatefulWidget {
-  const CharacterTalentsPage(this.onValidate, {super.key});
-
-  final Function(bool isValid) onValidate;
+  const CharacterTalentsPage({super.key});
 
   @override
   ConsumerState<CharacterTalentsPage> createState() =>

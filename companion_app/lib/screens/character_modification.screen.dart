@@ -36,11 +36,7 @@ class _CharacterModificationScreenState extends ConsumerState<CharacterModificat
           child: TabBarView(physics: const NeverScrollableScrollPhysics(),
             children: [
             CharacterStatsPage(),
-            CharacterTalentsPage((bool isValid) {
-              setState(() {
-                _isTalentsPageValid = isValid;
-              });
-            }),
+            CharacterTalentsPage(),
             CharacterEquipmentPage(),
             CharacterSkillsPage()
           ],),
