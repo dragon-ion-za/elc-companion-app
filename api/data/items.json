@@ -84,27 +84,6 @@
         ]
     },
     {
-        "id": "itm_backpack",
-        "name": "Basic Backpack",
-        "description": "",
-        "attributes": [
-            {
-                "type": "cost",
-                "value": 1
-            },
-            {
-                "type": "container",
-                "slot": "intel"
-            }
-        ],
-        "containers": [
-            {
-                "id": "root",
-                "slot": "back"
-            }
-        ]
-    },
-    {
         "id": "itm_bodyarmour",
         "name": "Basic Body Armour",
         "description": "",

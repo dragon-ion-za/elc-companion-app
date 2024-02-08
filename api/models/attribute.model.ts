@@ -3,4 +3,5 @@ export class AttributeModel {
     slot: string = '';
     effectId: string = '';
     value: number = 0;
+    cooldownId: string = '';
 }

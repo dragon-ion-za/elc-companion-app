@@ -4,6 +4,8 @@ import { LookupViewModel } from "../view-models/lookup.viewmodel";
 import { ItemModel } from "../models/item.model";
 import { ItemViewModel } from "../view-models/item.viewmodel";
 import { ItemBuilder } from "../builders/items.builder";
+import { AbilityModel } from "../models/ability.model";
+import { AbilityViewModel } from "../view-models/ability.model";
 
 export class LookupController {
     public getRaces = (req: any, res: any) => {   
@@ -28,6 +30,10 @@ export class LookupController {
 
     public getItems = (req: any, res: any) => {         
         res.send(this.getLookupData<ItemModel, ItemViewModel>('items', (model: ItemModel) => ItemBuilder.buildFromModel(model)));
+    }
+
+    public getAbilities = (req: any, res: any) => {         
+        res.send(this.getLookupData<AbilityModel, AbilityViewModel>('abilities', (model: AbilityModel) => model as AbilityViewModel));
     }
 
     private getLookupDate = (lookupSetName: string): LookupViewModel[] => {
