@@ -10,11 +10,12 @@ class CharacterModificationScreen extends ConsumerStatefulWidget {
   const CharacterModificationScreen({super.key});
 
   @override
-  ConsumerState<CharacterModificationScreen> createState() => _CharacterModificationScreenState();
+  ConsumerState<CharacterModificationScreen> createState() =>
+      _CharacterModificationScreenState();
 }
 
-class _CharacterModificationScreenState extends ConsumerState<CharacterModificationScreen> {
-
+class _CharacterModificationScreenState
+    extends ConsumerState<CharacterModificationScreen> {
   @override
   Widget build(BuildContext context) {
     final char = ref.watch(characterProvider);
@@ -33,36 +34,39 @@ class _CharacterModificationScreenState extends ConsumerState<CharacterModificat
                   image: AssetImage('assets/images/background.png'),
                   opacity: 0.5,
                   fit: BoxFit.cover)),
-          child: TabBarView(physics: const NeverScrollableScrollPhysics(),
+          child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             children: [
-            CharacterStatsPage(),
-            CharacterTalentsPage(),
-            CharacterEquipmentPage(),
-            CharacterSkillsPage()
-          ],),
+              CharacterStatsPage(),
+              CharacterTalentsPage(),
+              CharacterEquipmentPage(),
+              CharacterSkillsPage()
+            ],
+          ),
         ),
         bottomNavigationBar: TabBar(
           tabs: [
             Badge(
               key: UniqueKey(),
-              isLabelVisible: !char!.areStatsValid,  
+              isLabelVisible: !char!.areStatsValid,
               child: Tab(
                 icon: Icon(Icons.account_circle),
               ),
             ),
             Badge(
-              isLabelVisible: !charNotifier.areTalentsValid(), 
+              isLabelVisible: !charNotifier.areTalentsValid(),
               child: Tab(
                 icon: Icon(Icons.star),
               ),
             ),
             Badge(
-              isLabelVisible: !charNotifier.isEquipmentValid(), 
+              isLabelVisible: !charNotifier.isEquipmentValid(),
               child: Tab(
                 icon: Icon(Icons.shield),
               ),
             ),
             Badge(
+              isLabelVisible: !charNotifier.areSkillsValid(),
               child: Tab(
                 icon: Icon(Icons.account_tree),
               ),

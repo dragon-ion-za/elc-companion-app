@@ -1,4 +1,5 @@
 import 'package:elc_companion_app/models/equipment.dart';
+import 'package:elc_companion_app/models/skill.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'character.g.dart';
 
@@ -13,9 +14,9 @@ class Character {
 
   final List<String> talentIds;
   final List<Equipment> equipment;
-  final List<String> skillIds;
+  final List<Skill> skills;
 
-  Character.empty()
+  Character.empty(this.skills)
       : id = null,
         name = '',
         bio = '',
@@ -23,11 +24,10 @@ class Character {
         factionId = null,
         eraId = null,
         talentIds = [],
-        equipment = [],
-        skillIds = [];
+        equipment = [];
 
   Character(this.id, this.name, this.bio, this.raceId, this.factionId,
-      this.eraId, this.talentIds, this.equipment, this.skillIds);
+      this.eraId, this.talentIds, this.equipment, this.skills);
 
   bool get areStatsValid {
     return name.isNotEmpty && (raceId != null && raceId != '0') && (factionId != null && factionId != '0') && (eraId != null && eraId != '0');

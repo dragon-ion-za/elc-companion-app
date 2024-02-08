@@ -1,9 +1,8 @@
-import 'dart:math';
-
-import 'package:elc_companion_app/models/continuum-skill-node.dart';
-import 'package:elc_companion_app/models/lookup.dart';
-import 'package:elc_companion_app/painter/continuum.painter.dart';
+import 'package:elc_companion_app/models/skill_training.dart';
+import 'package:elc_companion_app/providers/character.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
+import 'package:elc_companion_app/widgets/skill_manager_modal.dart';
+import 'package:elc_companion_app/widgets/skill_training_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,43 +15,56 @@ class CharacterSkillsPage extends ConsumerStatefulWidget {
 }
 
 class _CharacterSkillsPageState extends ConsumerState<CharacterSkillsPage> {
-  Offset _offset = Offset.zero;
-  double _zoom = 1.0;
-  final _zoomFactor = 1.0;
-  final spiralOrigin = const Offset(200, 200);
-  final spiralAngleRadians = 90 * (pi / 180);
+  void updateSkillTraining(
+      context, CharacterNotifier charNotifier, String skillId) async {
+    final result = await showModalBottomSheet<SkillTraining>(
+        context: context, builder: (context) => SkillManagerModal(skillId));
+    if (result != null) {
+      charNotifier.updateSkillProgression(
+          skillId, result.trainingProgress, result.abilityIds);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final skills = ref.watch(lookupCacheProvider).value!.skills;
+    final skills = ref.read(lookupCacheProvider).value!.skills;
+    final updateNotifier = ref.read(characterProvider.notifier);
+    final character = ref.watch(characterProvider);
 
-    return GestureDetector(
-      onScaleUpdate: (details) {
-        setState(() {
-          _offset += details.focalPointDelta;
-          _zoom = _zoomFactor * details.scale;
-          debugPrint('$_zoom');
-        });
-      },
-      child: CustomPaint(
-        painter: ContinuumPainter(
-          context,
-          _offset,
-          _zoom,
-          [
-            for (var i = 0; i < skills.length; i++) _buildNode(i, skills[i]),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 256,
+              child: ListView.builder(
+                  itemCount: character!.skills.length,
+                  itemBuilder: (ctx, index) => ListTile(
+                        title: Text(skills
+                            .firstWhere(
+                                (x) => x.id == character!.skills[index].id)
+                            .name),
+                        trailing: SkillTrainingIndicator(
+                            character!.skills[index].progression),
+                        onTap: () => updateSkillTraining(context,
+                            updateNotifier, character!.skills[index].id),
+                      )),
+            ),
+          ),
+          Center(
+            child: Text('Fully Trained Skills: ${updateNotifier.getFullyTrainedSkillCount()}/3'),
+          ),
+          const Center(
+            child: Text('OR'),
+          ),
+          Center(
+            child: Text('Fully Trained Skills: ${updateNotifier.getFullyTrainedSkillCount()}/2 and Partially Trained Skills: ${updateNotifier.getPratiallyTrainedSkillCount()}/2'),
+          )
+        ],
       ),
     );
-  }
-
-  ContinuumSkillNode _buildNode(num index, Lookup skill) {
-    final angle = spiralAngleRadians * index;
-    final originX = (spiralOrigin.dx * angle) *
-        cos(angle);
-    final originY = (spiralOrigin.dy * angle) *
-        sin(angle);
-    return ContinuumSkillNode(skill.name, Offset(originX, originY), 0);
   }
 }

@@ -26,8 +26,9 @@ class LookupCacheNotifier extends AsyncNotifier<LookupCache> {
             final talentsFlaws = await LookupApiService(accessToken!).getTalentsFlaws();
             final items = await LookupApiService(accessToken!).getItems();
             final skills = await LookupApiService(accessToken!).getSkills();
+            final abilities = await LookupApiService(accessToken!).getAbilities();
 
-            return LookupCache(races, factions, eras, talentsFlaws, items, skills);
+            return LookupCache(races, factions, eras, talentsFlaws, items, skills, abilities);
         } );
   }
 }
