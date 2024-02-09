@@ -16,9 +16,9 @@ class CharacterSkillsPage extends ConsumerStatefulWidget {
 
 class _CharacterSkillsPageState extends ConsumerState<CharacterSkillsPage> {
   void updateSkillTraining(
-      context, CharacterNotifier charNotifier, String skillId) async {
+      context, CharacterNotifier charNotifier, String skillId, num progression, List<String> abilityIds) async {
     final result = await showModalBottomSheet<SkillTraining>(
-        context: context, builder: (context) => SkillManagerModal(skillId));
+        context: context, builder: (context) => SkillManagerModal(skillId, progression, abilityIds));
     if (result != null) {
       charNotifier.updateSkillProgression(
           skillId, result.trainingProgress, result.abilityIds);
@@ -50,7 +50,7 @@ class _CharacterSkillsPageState extends ConsumerState<CharacterSkillsPage> {
                         trailing: SkillTrainingIndicator(
                             character!.skills[index].progression),
                         onTap: () => updateSkillTraining(context,
-                            updateNotifier, character!.skills[index].id),
+                            updateNotifier, character!.skills[index].id, character!.skills[index].progression, character!.skills[index].abilityIds),
                       )),
             ),
           ),

@@ -19,6 +19,9 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
     final lookup = ref.watch(lookupCacheProvider);
     final updateNotifier = ref.read(characterProvider.notifier);
     final character = ref.read(characterProvider);
+    final nameArray = character!.name.split(' ');
+    final firstName = nameArray.first.isNotEmpty ? nameArray.first[0].toUpperCase() : '';
+    final lastName = nameArray.last.isNotEmpty ? nameArray.last[0].toUpperCase() : '';
 
     return SingleChildScrollView(
       child: Container(
@@ -29,6 +32,7 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
           child: Column(children: [
             CircleAvatar(
               radius: 64,
+              child: Text(nameArray.isNotEmpty ? '$firstName$lastName' : ''),
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name *'),
@@ -50,7 +54,7 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
             DropdownButtonFormField(
               decoration: const InputDecoration(labelText: 'Race *'),
               value: character!.raceId,
-              items: [...lookup.value!.races, Lookup('0', '-- Not Selected --', '', 0)]
+              items: lookup.value!.races
                   .map((e) => DropdownMenuItem(
                         child: Text(e.name),
                         value: e.id,
@@ -65,7 +69,7 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
             DropdownButtonFormField(
               decoration: InputDecoration(labelText: 'Faction *'),
               value: character!.factionId,
-              items: [...lookup.value!.factions, Lookup('0', '-- Not Selected --', '', 0)]
+              items: lookup.value!.factions
                   .map(
                       (e) => DropdownMenuItem(child: Text(e.name), value: e.id))
                   .toList(),
@@ -78,7 +82,7 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
             DropdownButtonFormField(
               decoration: InputDecoration(labelText: 'Era *'),
               value: character!.eraId,
-              items: [...lookup.value!.eras, Lookup('0', '-- Not Selected --', '', 0)]
+              items: lookup.value!.eras
                   .map(
                       (e) => DropdownMenuItem(child: Text(e.name), value: e.id))
                   .toList(),

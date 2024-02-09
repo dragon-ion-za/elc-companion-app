@@ -5,7 +5,7 @@ import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CharacterNotifier extends StateNotifier<Character> {
-  CharacterNotifier(this._ref) : super(Character.empty(_ref.read(lookupCacheProvider).value!.skills.map((e) => Skill(e.id, 0, [])).toList()));
+  CharacterNotifier(this._ref) : super(Character.empty(_ref.read(lookupCacheProvider).value!.skills.map((e) => Skill(e.id, 0, List<String>.filled(4, ''))).toList()));
 
   final Ref _ref;
 

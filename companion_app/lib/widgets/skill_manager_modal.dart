@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SkillManagerModal extends ConsumerStatefulWidget {
-  const SkillManagerModal(this.skillId, {super.key});
+  const SkillManagerModal(this.skillId, this.progression, this.abilityIds,
+      {super.key});
 
   final String skillId;
+  final num progression;
+  final List<String> abilityIds;
 
   @override
   ConsumerState<SkillManagerModal> createState() => _SkillManagerModalState();
@@ -17,11 +20,25 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
   final SkillTraining _training = SkillTraining();
   Set<String> _trainingLevel = {'0'};
 
-   void saveData(context) {
-      if (form.currentState!.validate()) {
-        Navigator.pop(context, _training);
-      }
+  void saveData(context) {
+    if (form.currentState!.validate()) {
+      Navigator.pop(context, _training);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _training.trainingProgress = widget.progression;
+    _training.abilityIds = widget.abilityIds;
+
+    if (_training.trainingProgress >= 8) {
+      _trainingLevel = { '2' };
+    } else if (_training.trainingProgress > 0) {
+      _trainingLevel = { '1' };
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +62,10 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
                 switch (_trainingLevel.first) {
                   case '0':
                     _training.trainingProgress = 0;
+                    _training.abilityIds[0] = '';
                   case '1':
                     _training.trainingProgress = 4;
+                    _training.abilityIds[0] = '';
                   case '2':
                     _training.trainingProgress = 8;
                 }
@@ -64,6 +83,7 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
                           .map((e) => DropdownMenuItem(
                               value: e.id, child: Text(e.name)))
                           .toList(),
+                      value: _training.abilityIds[0].isNotEmpty ? _training.abilityIds[0] : null,
                       validator: (value) => value == null
                           ? 'Ability selection is required.'
                           : null,
@@ -90,7 +110,11 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
                 const SizedBox(
                   width: 16,
                 ),
-                OutlinedButton(onPressed: () { saveData(context); }, child: Text('Save'))
+                OutlinedButton(
+                    onPressed: () {
+                      saveData(context);
+                    },
+                    child: Text('Save'))
               ],
             )
           ],
