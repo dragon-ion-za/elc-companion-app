@@ -16,7 +16,6 @@ class CharacterModificationScreen extends ConsumerStatefulWidget {
 
 class _CharacterModificationScreenState
     extends ConsumerState<CharacterModificationScreen> {
-
   void submitCharacter(CharacterNotifier charNotifier) async {
     List<String> errors = [];
 
@@ -39,16 +38,22 @@ class _CharacterModificationScreenState
     if (errors.isEmpty) {
       try {
         await charNotifier.save();
+
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
       } catch (e) {
         print(e);
       }
-      
     } else {
-      showDialog(context: context, builder: (ctx) => AlertDialog(content: Column(mainAxisSize: MainAxisSize.min, children: [
-        Text('The following tabs are invalid:'),
-        for (var error in errors)
-          Text(error)
-      ]),));
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                content: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Text('The following tabs are invalid:'),
+                  for (var error in errors) Text(error)
+                ]),
+              ));
     }
   }
 
@@ -63,7 +68,11 @@ class _CharacterModificationScreenState
         appBar: AppBar(
           title: const Text('Modify Character'),
           actions: [
-            IconButton(onPressed: () { submitCharacter(charNotifier); }, icon: const Icon(Icons.save))
+            IconButton(
+                onPressed: () {
+                  submitCharacter(charNotifier);
+                },
+                icon: const Icon(Icons.save))
           ],
         ),
         body: Container(

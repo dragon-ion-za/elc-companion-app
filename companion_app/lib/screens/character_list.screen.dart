@@ -56,9 +56,15 @@ class CharacterListScreen extends ConsumerWidget {
                     ),
                   )
                 : ListView.builder(
+                    padding: const EdgeInsets.all(8),
                     itemCount: value.length,
-                    itemBuilder: (ctx, index) => ListTile(
-                      title: Text(value[index].name),
+                    itemBuilder: (ctx, index) => Material(
+                      child: ListTile(
+                        title: Text(value[index].name),
+                        leading: CircleAvatar(
+                            child: Text(
+                                '${value[index].name.split(' ').first[0]}${value[index].name.split(' ').last[0]}')),
+                      ),
                     ),
                   );
           }
