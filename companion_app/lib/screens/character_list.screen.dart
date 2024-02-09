@@ -7,6 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CharacterListScreen extends ConsumerWidget {
   const CharacterListScreen({super.key});
 
+  navigateToAddPage(context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => const CharacterModificationScreen()));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final characters = ref.watch(characterListProvider);
@@ -15,6 +20,13 @@ class CharacterListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Characters'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                navigateToAddPage(context);
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
       body: Container(
         width: double.infinity,
@@ -45,9 +57,7 @@ class CharacterListScreen extends ConsumerWidget {
                           const Text('You have no characters yet'),
                           IconButton.filled(
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) =>
-                                      const CharacterModificationScreen()));
+                              navigateToAddPage(context);
                             },
                             icon: const Icon(Icons.add),
                           ),
@@ -55,15 +65,20 @@ class CharacterListScreen extends ConsumerWidget {
                       ),
                     ),
                   )
-                : ListView.builder(
+                : ListView.separated(
                     padding: const EdgeInsets.all(8),
                     itemCount: value.length,
+                    separatorBuilder: (ctx, index) => const SizedBox(
+                      height: 4,
+                    ),
                     itemBuilder: (ctx, index) => Material(
                       child: ListTile(
                         title: Text(value[index].name),
+                        subtitle: Text('${lookupCache.value!.factions.firstWhere((x) => x.id == value[index].factionId).name} | ${lookupCache.value!.eras.firstWhere((x) => x.id == value[index].eraId).name}'),
                         leading: CircleAvatar(
-                            child: Text(
-                                '${value[index].name.split(' ').first[0]}${value[index].name.split(' ').last[0]}')),
+                          child: Text(
+                              '${value[index].name.split(' ').first[0]}${value[index].name.split(' ').last[0]}'),
+                        ),
                       ),
                     ),
                   );
