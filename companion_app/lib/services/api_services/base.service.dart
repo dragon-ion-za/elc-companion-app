@@ -5,5 +5,5 @@ abstract class BaseApiService {
 
   final String _accessToken;
   String get baseUrl => GlobalConfiguration().getValue('apiUrl');
-  Map<String, String> get headers => {'Authorization': 'Bearer $_accessToken'};
+  Map<String, String> get headers => {'Authorization': 'Bearer $_accessToken', 'Content-Type': 'application/json'};
 }

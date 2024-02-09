@@ -1,7 +1,9 @@
 import 'package:elc_companion_app/models/character.dart';
 import 'package:elc_companion_app/models/equipment.dart';
 import 'package:elc_companion_app/models/skill.dart';
+import 'package:elc_companion_app/providers/auth.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
+import 'package:elc_companion_app/services/api_services/character_api.service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CharacterNotifier extends StateNotifier<Character> {
@@ -51,6 +53,10 @@ class CharacterNotifier extends StateNotifier<Character> {
     skills.insert(skillIndex, Skill(skillId, skillProgression, abilityIds));
 
     state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, state.talentIds, state.equipment, skills);
+  }
+
+  bool areStatsValid() {
+    return state.name.isNotEmpty && state.eraId != null && state.raceId != null && state.factionId != null;
   }
 
   bool areTalentsValid() {
@@ -106,6 +112,12 @@ class CharacterNotifier extends StateNotifier<Character> {
 
   num getPratiallyTrainedSkillCount() {
     return state.skills.where((x) => x.progression > 0 && x.progression < 8).length;
+  }
+
+  Future<bool> save() async {
+    final accessToken = _ref.read(authProvider)!.accessToken;
+    await CharacterApiService(accessToken!).saveCharacter(state!);
+    return true;
   }
 }
 

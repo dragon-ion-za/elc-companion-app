@@ -16,6 +16,42 @@ class CharacterModificationScreen extends ConsumerStatefulWidget {
 
 class _CharacterModificationScreenState
     extends ConsumerState<CharacterModificationScreen> {
+
+  void submitCharacter(CharacterNotifier charNotifier) async {
+    List<String> errors = [];
+
+    if (!charNotifier.areStatsValid()) {
+      errors.add('Stats are invalid.');
+    }
+
+    if (!charNotifier.areSkillsValid()) {
+      errors.add('Skill selection is invalid.');
+    }
+
+    if (!charNotifier.isEquipmentValid()) {
+      errors.add('Equipment selection is invalid.');
+    }
+
+    if (!charNotifier.areTalentsValid()) {
+      errors.add('Talent selection is invalid.');
+    }
+
+    if (errors.isEmpty) {
+      try {
+        await charNotifier.save();
+      } catch (e) {
+        print(e);
+      }
+      
+    } else {
+      showDialog(context: context, builder: (ctx) => AlertDialog(content: Column(mainAxisSize: MainAxisSize.min, children: [
+        Text('The following tabs are invalid:'),
+        for (var error in errors)
+          Text(error)
+      ]),));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final char = ref.watch(characterProvider);
@@ -26,6 +62,9 @@ class _CharacterModificationScreenState
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Modify Character'),
+          actions: [
+            IconButton(onPressed: () { submitCharacter(charNotifier); }, icon: const Icon(Icons.save))
+          ],
         ),
         body: Container(
           height: double.infinity,
