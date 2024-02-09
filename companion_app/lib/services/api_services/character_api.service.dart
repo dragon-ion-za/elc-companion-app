@@ -21,7 +21,7 @@ class CharacterApiService extends BaseApiService {
 
     if (rawCharacter.isEmpty) return null;
 
-    return Character(rawCharacter['id']);
+    return Character.fromJson(rawCharacter);
   }
   
   Future<List<Character>> getCharacters() async {
@@ -42,5 +42,20 @@ class CharacterApiService extends BaseApiService {
     }
     
     return characters;
+  }
+
+  Future<Character?> saveCharacter(Character char) async {
+    final url = Uri.http(super.baseUrl, _apiBaseUrl);
+    final response = await http.post(url, headers: headers, body: json.encode(char));
+
+    if (response.statusCode == 404) {
+      return null;
+    }
+
+    final Map<String, dynamic> rawCharacter = json.decode(response.body);
+
+    if (rawCharacter.isEmpty) return null;
+
+    return Character.fromJson(rawCharacter);
   }
 }

@@ -1,0 +1,16 @@
+{
+    "lookup": [
+        {
+            "id": "fct_siera",
+            "name": "S.I.Er.A."
+        },
+        {
+            "id": "fct_fbi",
+            "name": "FBI"
+        },
+        {
+            "id": "fct_brotherhood",
+            "name": "Brotherhood of Ascension"
+        }
+    ]
+}

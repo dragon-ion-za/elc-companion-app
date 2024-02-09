@@ -1,0 +1,87 @@
+[
+    {
+        "id": "abl_doorkicker",
+        "skillId": "skl_breaching",
+        "name": "Door Kicker",
+        "description": "",
+        "isElite": false,
+        "attributes": [
+            {
+                "type": "onBreach",
+                "effectId": "efct_extraattackwithedge"
+            },
+            {
+                "type": "reset",
+                "cooldownId": "cdwn_perengagement"
+            }
+        ]
+    },
+    {
+        "id": "abl_breathexcercises",
+        "skillId": "skl_fieldmedic",
+        "name": "Breath Excercises",
+        "description": "",
+        "isElite": false,
+        "attributes": [
+            {
+                "type": "onAction",
+                "effectId": "efct_removestress"
+            },
+            {
+                "type": "resourcePoolSkill",
+                "value": 1
+            },
+            {
+                "type": "reset",
+                "cooldownId": "cdwn_debrief"
+            }
+        ]
+    },
+    {
+        "id": "abl_inspiration",
+        "skillId": "skl_leadership",
+        "name": "Inspiration",
+        "description": "",
+        "isElite": false,
+        "attributes": [
+            {
+                "type": "onAction",
+                "effectId": "efct_doubleturn"
+            },
+            {
+                "type": "targets",
+                "value": 3
+            },
+            {
+                "type": "reset",
+                "cooldownId": "cdwn_perengagement"
+            }
+        ]
+    },
+    {
+        "id": "abl_mozambiquedrill",
+        "skillId": "skl_weaponstraining",
+        "name": "Mozambique Drill",
+        "description": "",
+        "isElite": false,
+        "attributes": [
+            {
+                "type": "onAction",
+                "effectId": "efct_trippleattack"
+            },
+            {
+                "type": "costActions",
+                "value": 2
+            },
+            {
+                "type": "onSuccess",
+                "effectId": "efct_instakill",
+                "condition": "allAttacksHit"
+            },
+            {
+                "type": "reset",
+                "cooldownId": "cdwn_debrief"
+            }
+        ]
+    }
+]

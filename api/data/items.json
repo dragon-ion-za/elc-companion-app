@@ -1,0 +1,145 @@
+[
+    {
+        "id": "itm_pistol",
+        "name": "Pistol",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "mod",
+                "slot": "barrel"
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "sidearm"
+            }
+        ]
+    },
+    {
+        "id": "itm_riflear",
+        "name": "Rifle (AR Platform)",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "mod",
+                "slot": "barrel"
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "main,sling"
+            }
+        ]
+    },
+    {
+        "id": "itm_nvg",
+        "name": "Night Vision Goggles",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "utility",
+                "effectId": "efct_togglenightvision"
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "head"
+            }
+        ]
+    },
+    {
+        "id": "itm_beltg1",
+        "name": "Basic Grenade Belt",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "container",
+                "slot": "grenade"
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "belt"
+            }
+        ]
+    },
+    {
+        "id": "itm_bodyarmour",
+        "name": "Basic Body Armour",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "armour",
+                "value": 1
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "chest"
+            }
+        ]
+    },
+    {
+        "id": "itm_knife",
+        "name": "Tacticle Knife",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "knife"
+            }
+        ]
+    },
+    {
+        "id": "itm_stimrig1",
+        "name": "Basic Stims Belt",
+        "description": "",
+        "attributes": [
+            {
+                "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "container",
+                "slot": "stims"
+            }
+        ],
+        "containers": [
+            {
+                "id": "root",
+                "slot": "rig"
+            }
+        ]
+    }
+]

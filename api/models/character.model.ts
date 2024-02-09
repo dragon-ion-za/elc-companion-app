@@ -1,16 +1,25 @@
+import { ObjectId, Document as MongoDoc, WithId } from "mongodb";
 import { EquipableModel } from "./equipable.model";
 import { IBaseModel } from "./model.interface";
 import { SkillModel } from "./skill.model";
+import { SurvivabilityModel } from "./survivability.model";
 
-export class CharacterModel extends Document implements IBaseModel {
-    id: string = '';
+export class CharacterModel implements IBaseModel {
+    _id: ObjectId;
     userId: string = '';
+    
     name: string = '';
-    talentIds: string[] = [];
-    flawIds: string[] = [];
-    skills: SkillModel[] = [];
-    equipment: EquipableModel[] = [];
-    inventoryIds: string[] = [];
     bio: string = '';
-    imageId: string = '';
+    raceId: string = '';
+    factionId: string = '';
+    eraId: string = '';
+    imageUrl: string = '';
+    hitPoints: SurvivabilityModel = new SurvivabilityModel();
+    talentIds: string[] = [];
+    equipment: EquipableModel[] = [];
+    skills: SkillModel[] = [];
+
+    constructor(id: ObjectId) {
+        this._id = id;
+    }
 }
