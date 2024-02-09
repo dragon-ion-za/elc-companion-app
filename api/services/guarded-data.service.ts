@@ -1,8 +1,9 @@
 import * as mongoDB from 'mongodb';
+import { IBaseModel } from '../models/model.interface';
 
 const config = require('config');
 
-export class GuardedDataService<TCollectionModel extends Document> {
+export class GuardedDataService<TCollectionModel extends IBaseModel> {
     private readonly DB_NAME: string = 'elc_data';
     private dbUrl: string = config.get('connectionStrings.elcContext');
     private mongoClient: mongoDB.MongoClient = new mongoDB.MongoClient(this.dbUrl);
@@ -18,6 +19,18 @@ export class GuardedDataService<TCollectionModel extends Document> {
     public async queryData(filter: mongoDB.Filter<TCollectionModel>) : Promise<TCollectionModel[]> {
         await this.connectToDb();
         return (await this.collection?.find({...filter, userId: this.userId}).toArray()) as TCollectionModel[];
+    }
+
+    public async saveData(entity: TCollectionModel) : Promise<TCollectionModel> {
+        await this.connectToDb();
+
+        let result = await this.collection?.insertOne({...entity, userId: this.userId} as any);
+        
+        if (result?.acknowledged) {
+            return entity;
+        } else {
+            throw 'Unable to insert user.';
+        }
     }
 
     private async connectToDb() {

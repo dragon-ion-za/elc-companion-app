@@ -10,6 +10,7 @@ router.post('/users', new UsersController().save);
 router.get('/users/:id', new UsersController().getById);
 
 router.get('/characters', new CharactersController().get);
+router.post('/characters', new CharactersController().post);
 
 router.get('/lookup/races', new LookupController().getRaces);
 router.get('/lookup/factions', new LookupController().getFactions);

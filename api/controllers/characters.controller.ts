@@ -5,6 +5,6 @@ import { GuardedBaseController } from './guarded.controller';
 
 export class CharactersController extends GuardedBaseController<CharacterModel, CharacterViewModel> {
     constructor() {
-        super('Characters', (model: CharacterModel) => CharacterBuilder.buildFromModel(model));        
+        super('Characters', (model: CharacterModel) => CharacterBuilder.buildFromModel(model), (viewModel: CharacterViewModel) => CharacterBuilder.buildFromViewModel(viewModel));        
     }
 }
