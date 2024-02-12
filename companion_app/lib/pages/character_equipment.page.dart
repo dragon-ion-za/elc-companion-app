@@ -19,7 +19,7 @@ class CharacterEquipmentPage extends ConsumerWidget {
 
     return Container(
       height: double.infinity,
-      decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
       child: Column(
         children: [
           SingleChildScrollView(

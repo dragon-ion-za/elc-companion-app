@@ -12,11 +12,11 @@ class SkillTrainingIndicatorPainter extends CustomPainter {
 
     canvas.clipRect(backgroundRect);
 
-    Paint untrainedPaint = Paint()..color = Colors.blueGrey;
+    Paint untrainedPaint = Paint()..color = Colors.purple[100]!;
     Paint trainedPainter = Paint()..color = Colors.green;
-    Paint experiencedPainter = Paint()..color = Colors.purple;
-    Paint masteredPainter = Paint()..color = Colors.pink;
-    Paint elitePainter = Paint()..color = Colors.amber;
+    Paint experiencedPainter = Paint()..color = Colors.purple[400]!;
+    Paint masteredPainter = Paint()..color = Colors.purple[600]!;
+    Paint elitePainter = Paint()..color = Colors.purple[900]!;
 
     canvas.save();
 

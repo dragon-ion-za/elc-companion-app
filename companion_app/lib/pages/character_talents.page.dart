@@ -33,7 +33,7 @@ class _CharacterTalentsPageState extends ConsumerState<CharacterTalentsPage> {
 
     return Container(
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
