@@ -25,13 +25,17 @@ class _CharacterStatsPageState extends ConsumerState<CharacterStatsPage> {
 
     return SingleChildScrollView(
       child: Container(
+        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+        decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
         child: Form(
           key: form,
-          child: Column(children: [
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
             CircleAvatar(
               radius: 64,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               child: Text(nameArray.isNotEmpty ? '$firstName$lastName' : ''),
             ),
             TextFormField(

@@ -95,7 +95,6 @@ class _CharacterModificationScreenState
         bottomNavigationBar: TabBar(
           tabs: [
             Badge(
-              key: UniqueKey(),
               isLabelVisible: !char!.areStatsValid,
               child: Tab(
                 icon: Icon(Icons.account_circle),
