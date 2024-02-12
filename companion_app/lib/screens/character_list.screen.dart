@@ -1,6 +1,7 @@
 import 'package:elc_companion_app/providers/character-list.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:elc_companion_app/screens/character_modification.screen.dart';
+import 'package:elc_companion_app/screens/character_view.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,11 @@ class CharacterListScreen extends ConsumerWidget {
   navigateToAddPage(context) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (ctx) => const CharacterModificationScreen()));
+  }
+
+  navigateToViewPage(context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => const CharacterViewScreen()));
   }
 
   @override
@@ -73,6 +79,7 @@ class CharacterListScreen extends ConsumerWidget {
                     ),
                     itemBuilder: (ctx, index) => Material(
                       child: ListTile(
+                        onTap: () { navigateToViewPage(context); },
                         title: Text(value[index].name),
                         subtitle: Text('${lookupCache.value!.factions.firstWhere((x) => x.id == value[index].factionId).name} | ${lookupCache.value!.eras.firstWhere((x) => x.id == value[index].eraId).name}'),
                         leading: CircleAvatar(
