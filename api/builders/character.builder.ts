@@ -13,7 +13,7 @@ export class CharacterBuilder {
         viewModel.raceId = model.raceId;
         viewModel.factionId = model.factionId;
         viewModel.eraId = model.eraId;
-        viewModel.hitPoints = model.hitPoints;
+        viewModel.survivability = model.survivability;
         viewModel.skills = model.skills;
         viewModel.talentIds = model.talentIds;
         viewModel.equipment = model.equipment;
@@ -29,7 +29,7 @@ export class CharacterBuilder {
         model.raceId = viewModel.raceId;
         model.factionId = viewModel.factionId;
         model.eraId = viewModel.eraId;
-        model.hitPoints = viewModel.hitPoints;
+        model.survivability = viewModel.survivability;
         model.skills = viewModel.skills;
         model.talentIds = viewModel.talentIds;
         model.equipment = viewModel.equipment;

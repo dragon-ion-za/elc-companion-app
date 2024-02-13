@@ -11,7 +11,7 @@ export class CharacterViewModel {
     factionId: string = '';
     eraId: string = '';
     imageUrl: string = '';
-    hitPoints: SurvivabilityViewModel = new SurvivabilityViewModel();
+    survivability: SurvivabilityViewModel = new SurvivabilityViewModel();
     talentIds: string[] = [];
     equipment: EquipableViewModel[] = [];
     skills: SkillViewModel[] = [];
