@@ -29,6 +29,19 @@ export abstract class GuardedBaseController<TModel extends IBaseModel, TViewMode
         }
     }
 
+    public getById = async (req: any, res: any, next: any) => {
+        try {
+            if (this.dataService == null) this.initDataService(req.auth.payload.sub);
+            let id: string = req.params.id;
+            let data: TModel = await this.dataService!.getById(id);
+
+            res.send(this.toViewModel(data));
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
     public post = async (req: any, res: any, next: any) => {
         try {
             if (this.dataService == null) this.initDataService(req.auth.payload.sub);

@@ -21,6 +21,11 @@ export class GuardedDataService<TCollectionModel extends IBaseModel> {
         return (await this.collection?.find({...filter, userId: this.userId}).toArray()) as TCollectionModel[];
     }
 
+    public async getById(id: string) : Promise<TCollectionModel> {
+        await this.connectToDb();
+        return (await this.collection?.findOne({ _id: new mongoDB.ObjectId(id), userId: this.userId } as any)) as TCollectionModel;
+    }
+
     public async saveData(entity: TCollectionModel) : Promise<TCollectionModel> {
         await this.connectToDb();
 
