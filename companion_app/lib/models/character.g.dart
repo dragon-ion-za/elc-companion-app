@@ -20,6 +20,10 @@ Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
       (json['skills'] as List<dynamic>)
           .map((e) => Skill.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['survivability'] == null
+          ? null
+          : Survivability.fromJson(
+              json['survivability'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
@@ -32,4 +36,5 @@ Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
       'talentIds': instance.talentIds,
       'equipment': instance.equipment,
       'skills': instance.skills,
+      'survivability': instance.survivability,
     };

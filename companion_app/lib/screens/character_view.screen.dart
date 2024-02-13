@@ -2,20 +2,23 @@ import 'package:elc_companion_app/pages/character_equipment.page.dart';
 import 'package:elc_companion_app/pages/character_skills.page.dart';
 import 'package:elc_companion_app/pages/character_stats.page.dart';
 import 'package:elc_companion_app/pages/character_talents.page.dart';
+import 'package:elc_companion_app/pages/character_view_stats_actions.page.dart';
 import 'package:elc_companion_app/providers/character.provider.dart';
+import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CharacterViewScreen extends ConsumerStatefulWidget {
-  const CharacterViewScreen({super.key});
+  const CharacterViewScreen(this._characterId, {super.key});
+
+  final String _characterId;
 
   @override
   ConsumerState<CharacterViewScreen> createState() =>
-      _CharacterModificationScreenState();
+      _CharacterViewScreenState();
 }
 
-class _CharacterModificationScreenState
-    extends ConsumerState<CharacterViewScreen> {
+class _CharacterViewScreenState extends ConsumerState<CharacterViewScreen> {
   void submitCharacter(CharacterNotifier charNotifier) async {
     List<String> errors = [];
 
@@ -59,68 +62,71 @@ class _CharacterModificationScreenState
 
   @override
   Widget build(BuildContext context) {
-    final char = ref.watch(characterProvider);
     final charNotifier = ref.read(characterProvider.notifier);
+    final lookupCache = ref.watch(lookupCacheProvider);
 
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('View Character'),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  submitCharacter(charNotifier);
-                },
-                icon: const Icon(Icons.save))
-          ],
-        ),
-        body: Container(
-          height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/background.png'),
-                  opacity: 0.5,
-                  fit: BoxFit.cover)),
-          child: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              CharacterStatsPage(),
-              CharacterTalentsPage(),
-              CharacterEquipmentPage(),
-              CharacterSkillsPage()
-            ],
-          ),
-        ),
-        bottomNavigationBar: TabBar(
-          tabs: [
-            Badge(
-              isLabelVisible: !char!.areStatsValid,
-              child: Tab(
-                icon: Icon(Icons.account_circle),
+    return FutureBuilder(
+        future: charNotifier.loadById(widget._characterId),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasData) {
+            return DefaultTabController(
+              length: 4,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: ListTile(
+                    title: Text(snapshot.data!.value!.name),
+                    subtitle: Text(
+                        '${lookupCache.value!.races.firstWhere((x) => x.id == snapshot.data!.value!.raceId).name} | ${lookupCache.value!.factions.firstWhere((x) => x.id == snapshot.data!.value!.factionId).name} | ${lookupCache.value!.eras.firstWhere((x) => x.id == snapshot.data!.value!.eraId).name}'),
+                    trailing: CircleAvatar(
+                          child: Text(
+                              '${snapshot.data!.value!.name.split(' ').first[0]}${snapshot.data!.value!.name.split(' ').last[0]}'),
+                        ),
+                  ),
+                ),
+                body: Container(
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/background.png'),
+                          opacity: 0.5,
+                          fit: BoxFit.cover)),
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      CharacterViewStatsActionsPage(),
+                      CharacterTalentsPage(),
+                      CharacterEquipmentPage(),
+                      CharacterSkillsPage()
+                    ],
+                  ),
+                ),
+                bottomNavigationBar: TabBar(
+                  tabs: [
+                    Tab(
+                      icon: Icon(Icons.account_circle),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.star),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.shield),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.account_tree),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Badge(
-              isLabelVisible: !charNotifier.areTalentsValid(),
-              child: Tab(
-                icon: Icon(Icons.star),
-              ),
-            ),
-            Badge(
-              isLabelVisible: !charNotifier.isEquipmentValid(),
-              child: Tab(
-                icon: Icon(Icons.shield),
-              ),
-            ),
-            Badge(
-              isLabelVisible: !charNotifier.areSkillsValid(),
-              child: Tab(
-                icon: Icon(Icons.account_tree),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text('Oops!!'),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 }

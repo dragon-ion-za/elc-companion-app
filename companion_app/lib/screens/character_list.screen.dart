@@ -13,9 +13,9 @@ class CharacterListScreen extends ConsumerWidget {
         builder: (ctx) => const CharacterModificationScreen()));
   }
 
-  navigateToViewPage(context) {
+  navigateToViewPage(context, String characterId) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) => const CharacterViewScreen()));
+        builder: (ctx) => CharacterViewScreen(characterId)));
   }
 
   @override
@@ -79,7 +79,7 @@ class CharacterListScreen extends ConsumerWidget {
                     ),
                     itemBuilder: (ctx, index) => Material(
                       child: ListTile(
-                        onTap: () { navigateToViewPage(context); },
+                        onTap: () { navigateToViewPage(context, value[index].id!); },
                         title: Text(value[index].name),
                         subtitle: Text('${lookupCache.value!.factions.firstWhere((x) => x.id == value[index].factionId).name} | ${lookupCache.value!.eras.firstWhere((x) => x.id == value[index].eraId).name}'),
                         leading: CircleAvatar(
