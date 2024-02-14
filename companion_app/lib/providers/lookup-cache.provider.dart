@@ -18,18 +18,18 @@ class LookupCacheNotifier extends AsyncNotifier<LookupCache> {
     state = const AsyncLoading();
 
     final accessToken = ref.read(authProvider)!.accessToken;
-    state = await AsyncValue.guard(
-        () async {
-            final races = await LookupApiService(accessToken!).getRaces();
-            final factions = await LookupApiService(accessToken!).getFactions();
-            final eras = await LookupApiService(accessToken!).getEras();
-            final talentsFlaws = await LookupApiService(accessToken!).getTalentsFlaws();
-            final items = await LookupApiService(accessToken!).getItems();
-            final skills = await LookupApiService(accessToken!).getSkills();
-            final abilities = await LookupApiService(accessToken!).getAbilities();
+    state = await AsyncValue.guard(() async {
+      final races = await LookupApiService(accessToken!).getRaces();
+      final factions = await LookupApiService(accessToken!).getFactions();
+      final eras = await LookupApiService(accessToken!).getEras();
+      final talentsFlaws = await LookupApiService(accessToken!).getTalentsFlaws();
+      final items = await LookupApiService(accessToken!).getItems();
+      final skills = await LookupApiService(accessToken!).getSkills();
+      final abilities = await LookupApiService(accessToken!).getAbilities();
 
-            return LookupCache(races, factions, eras, talentsFlaws, items, skills, abilities);
-        } );
+      return LookupCache(
+          races, factions, eras, talentsFlaws, items, skills, abilities);
+    });
   }
 }
 

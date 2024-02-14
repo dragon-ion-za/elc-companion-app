@@ -44,7 +44,7 @@ class CharacterListScreen extends ConsumerWidget {
                 fit: BoxFit.cover)),
         child: () {
           if (characters.isLoading || lookupCache.isLoading) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           } else if (characters.hasError || lookupCache.hasError) {
             return const Text('Oops..');
           } else if (characters.hasValue) {

@@ -1,11 +1,13 @@
-import 'package:elc_companion_app/models/lookup.dart';
-import 'package:elc_companion_app/providers/character.provider.dart';
+import 'package:elc_companion_app/models/playable_character.dart';
+import 'package:elc_companion_app/painter/hitpoint.painter.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CharacterViewStatsActionsPage extends ConsumerStatefulWidget {
-  CharacterViewStatsActionsPage({super.key});
+  CharacterViewStatsActionsPage(this._model, {super.key});
+
+  final PlayableCharacter _model;
 
   @override
   ConsumerState<CharacterViewStatsActionsPage> createState() =>
@@ -19,7 +21,6 @@ class _CharacterViewStatsActionsPageState
   @override
   Widget build(BuildContext context) {
     final lookup = ref.watch(lookupCacheProvider);
-    final character = ref.read(characterProvider);
 
     return SingleChildScrollView(
       child: Container(
@@ -35,26 +36,12 @@ class _CharacterViewStatsActionsPageState
                 Text('Hitpoints: '),
                 SizedBox(
                   width: 128,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      if (character!.survivability != null)
-                        for (var i = 1;
-                            i <= character!.survivability!.maxHp;
-                            i++)
-                          SizedBox(
-                            width: 8,
-                            height: 8,
-                            child: Container(
-                              color: i < character!.survivability!.currentHp
-                                  ? Theme.of(context).colorScheme.tertiary
-                                  : Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                    ],
+                  height: 8,
+                  child: CustomPaint(
+                    painter: HitpointPainter(context, widget._model.survivability.maxHp, widget._model.survivability.currentHp),
                   ),
                 ),
-                Text('Mitigation: ${character!.survivability?.mitigationScore ?? 0}')
+                Text('Mitigation: ${widget._model.survivability?.mitigationScore ?? 0}')
               ],
             ),
             Text('Actions: ')
