@@ -57,7 +57,7 @@ export abstract class GuardedBaseController<TModel extends IBaseModel, TViewMode
         }
     }
 
-    private initDataService(userId: string) {
+    protected initDataService(userId: string) {
         this.dataService = new GuardedDataService(this.collectionName, userId);
     }
 }

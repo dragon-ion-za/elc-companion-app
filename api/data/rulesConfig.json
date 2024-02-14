@@ -1,0 +1,14 @@
+{
+    "characterRules" : {
+        "baseHp": 3,
+        "baseMitigation": 0
+    },
+    "skillProgressionBonuses": [
+        0,
+        1,
+        1,
+        2,
+        2,
+        3
+    ]
+}

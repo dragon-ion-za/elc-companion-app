@@ -1,48 +1,31 @@
-import config from "config";
-import { readFile } from "../services/read-file.service";
-import { LookupViewModel } from "../view-models/lookup.viewmodel";
-import { ItemModel } from "../models/item.model";
-import { ItemViewModel } from "../view-models/item.viewmodel";
-import { ItemBuilder } from "../builders/items.builder";
-import { AbilityModel } from "../models/ability.model";
-import { AbilityViewModel } from "../view-models/ability.model";
+import { LookupDataServiceSingleton } from "../services/lookupData.service";
 
 export class LookupController {
     public getRaces = (req: any, res: any) => {   
-        res.send(this.getLookupDate('races'));
+        res.send(LookupDataServiceSingleton.getRaces());
     }
 
     public getFactions = (req: any, res: any) => {   
-        res.send(this.getLookupDate('factions'));
+        res.send(LookupDataServiceSingleton.getFactions());
     }
 
     public getEras = (req: any, res: any) => {   
-        res.send(this.getLookupDate('eras'));
+        res.send(LookupDataServiceSingleton.getEras());
     }
 
     public getTalentsFlaws = (req: any, res: any) => {   
-        res.send(this.getLookupDate('talents_flaws'));
+        res.send(LookupDataServiceSingleton.getTalentsFlaws());
     }
 
     public getSkills = (req: any, res: any) => {         
-        res.send(this.getLookupDate('skills'));
+        res.send(LookupDataServiceSingleton.getSkills());
     }
 
     public getItems = (req: any, res: any) => {         
-        res.send(this.getLookupData<ItemModel, ItemViewModel>('items', (model: ItemModel) => ItemBuilder.buildFromModel(model)));
+        res.send(LookupDataServiceSingleton.getItems());
     }
 
     public getAbilities = (req: any, res: any) => {         
-        res.send(this.getLookupData<AbilityModel, AbilityViewModel>('abilities', (model: AbilityModel) => model as AbilityViewModel));
-    }
-
-    private getLookupDate = (lookupSetName: string): LookupViewModel[] => {
-        let json = readFile(`${config.get("dataFileRoot")}${lookupSetName}.json`);
-        return json.lookup.map((x: any) => new LookupViewModel(x.id, x.name, x.score ?? 0)) as LookupViewModel[];
-    }
-
-    private getLookupData = <TModel, TViewModel>(lookupSetName: string, builder: (model: TModel) => TViewModel): TViewModel[] => {
-        let json = readFile(`${config.get("dataFileRoot")}${lookupSetName}.json`);
-        return json.map((x: any) => builder(x)) as TViewModel[];
+        res.send(LookupDataServiceSingleton.getAbilities());
     }
 }

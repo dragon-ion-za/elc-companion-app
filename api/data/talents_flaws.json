@@ -1,18 +1,16 @@
-{
-    "lookup": [
-        {
-            "id": "tlfl_marksman",
-            "name": "Marksman",
-            "blurb": "+1 to Accuracy Bonus",
-            "description": "",
-            "score": 2
-        },
-        {
-            "id": "tlfl_sociallyawkward",
-            "name": "Socially Awkward",
-            "blurb": "-1 to Social Interaction Tests",
-            "description": "",
-            "score": -2
-        }
-    ]
-}
+[
+    {
+        "id": "tlfl_marksman",
+        "name": "Marksman",
+        "blurb": "+1 to Accuracy Bonus",
+        "description": "",
+        "score": 2
+    },
+    {
+        "id": "tlfl_sociallyawkward",
+        "name": "Socially Awkward",
+        "blurb": "-1 to Social Interaction Tests",
+        "description": "",
+        "score": -2
+    }
+]

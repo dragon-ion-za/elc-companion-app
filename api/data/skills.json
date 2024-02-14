@@ -1,49 +1,47 @@
-{
-    "lookup": [
-        {
-            "id": "skl_mechanicsinterfacing",
-            "name": "Mechanics and Interfacing",
-            "description": ""
-        },
-        {
-            "id": "skl_covertactions",
-            "name": "Covert Actions",
-            "description": ""
-        },
-        {
-            "id": "skl_combatsurvival",
-            "name": "Combat Survival",
-            "description": ""
-        },
-        {
-            "id": "skl_combatawareness",
-            "name": "Combat Awareness",
-            "description": ""
-        },
-        {
-            "id": "skl_weaponstraining",
-            "name": "Weapons Training",
-            "description": ""
-        },
-        {
-            "id": "skl_leadership",
-            "name": "Leadership",
-            "description": ""
-        },
-        {
-            "id": "skl_fieldmedic",
-            "name": "Field Medic",
-            "description": ""
-        },
-        {
-            "id": "skl_socialinteractions",
-            "name": "Social Interactions",
-            "description": ""
-        },
-        {
-            "id": "skl_breaching",
-            "name": "Breaching",
-            "description": ""
-        }
-    ]
-}
+[
+    {
+        "id": "skl_mechanicsinterfacing",
+        "name": "Mechanics and Interfacing",
+        "description": ""
+    },
+    {
+        "id": "skl_covertactions",
+        "name": "Covert Actions",
+        "description": ""
+    },
+    {
+        "id": "skl_combatsurvival",
+        "name": "Combat Survival",
+        "description": ""
+    },
+    {
+        "id": "skl_combatawareness",
+        "name": "Combat Awareness",
+        "description": ""
+    },
+    {
+        "id": "skl_weaponstraining",
+        "name": "Weapons Training",
+        "description": ""
+    },
+    {
+        "id": "skl_leadership",
+        "name": "Leadership",
+        "description": ""
+    },
+    {
+        "id": "skl_fieldmedic",
+        "name": "Field Medic",
+        "description": ""
+    },
+    {
+        "id": "skl_socialinteractions",
+        "name": "Social Interactions",
+        "description": ""
+    },
+    {
+        "id": "skl_breaching",
+        "name": "Breaching",
+        "description": ""
+    }
+]
