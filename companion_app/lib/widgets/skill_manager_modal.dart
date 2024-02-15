@@ -1,15 +1,23 @@
 import 'package:elc_companion_app/models/skill_training.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
+import 'package:elc_companion_app/widgets/ability_selector.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SkillManagerModal extends ConsumerStatefulWidget {
   const SkillManagerModal(this.skillId, this.progression, this.abilityIds,
-      {super.key});
+      {super.key})
+      : readOnlyProgression = false;
+
+  const SkillManagerModal.abilities(
+      this.skillId, this.progression, this.abilityIds,
+      {super.key})
+      : readOnlyProgression = true;
 
   final String skillId;
   final num progression;
   final List<String> abilityIds;
+  final bool readOnlyProgression;
 
   @override
   ConsumerState<SkillManagerModal> createState() => _SkillManagerModalState();
@@ -34,9 +42,9 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
     _training.abilityIds = widget.abilityIds;
 
     if (_training.trainingProgress >= 8) {
-      _trainingLevel = { '2' };
+      _trainingLevel = {'2'};
     } else if (_training.trainingProgress > 0) {
-      _trainingLevel = { '1' };
+      _trainingLevel = {'1'};
     }
   }
 
@@ -44,58 +52,68 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
   Widget build(BuildContext context) {
     final lookup = ref.read(lookupCacheProvider).value!;
 
+    var masteryLevel = 'Untrained';
+
+    if (_training.trainingProgress == 40) {
+      masteryLevel = 'Elite';
+    } else if (_training.trainingProgress >= 32) {
+      masteryLevel = 'Mastered';
+    } else if (_training.trainingProgress >= 16) {
+      masteryLevel = 'Experienced';
+    } else if (_training.trainingProgress >= 8) {
+      masteryLevel = 'Proficient';
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Form(
         key: form,
         child: Column(
           children: [
-            SegmentedButton(
-              segments: const [
-                ButtonSegment(value: '0', label: Text('Untrained')),
-                ButtonSegment(value: '1', label: Text('Partially Trained')),
-                ButtonSegment(value: '2', label: Text('Trained'))
-              ],
-              selected: _trainingLevel,
-              onSelectionChanged: (selection) => setState(() {
-                _trainingLevel = selection;
-                switch (_trainingLevel.first) {
-                  case '0':
-                    _training.trainingProgress = 0;
-                    _training.abilityIds[0] = '';
-                  case '1':
-                    _training.trainingProgress = 4;
-                    _training.abilityIds[0] = '';
-                  case '2':
-                    _training.trainingProgress = 8;
-                }
-              }),
-            ),
-            if (_training.trainingProgress >= 8)
-              Row(
-                children: [
-                  const SizedBox(width: 128, child: Text('First Ability')),
-                  Expanded(
-                    child: DropdownButtonFormField(
-                      decoration: const InputDecoration(labelText: 'Ability'),
-                      items: lookup.abilities
-                          .where((x) => x.skillId == widget.skillId)
-                          .map((e) => DropdownMenuItem(
-                              value: e.id, child: Text(e.name)))
-                          .toList(),
-                      value: _training.abilityIds[0].isNotEmpty ? _training.abilityIds[0] : null,
-                      validator: (value) => value == null
-                          ? 'Ability selection is required.'
-                          : null,
-                      onChanged: (item) {
-                        setState(() {
-                          _training.abilityIds[0] = item!;
-                        });
-                      },
-                    ),
-                  )
+            if (widget.readOnlyProgression)
+              SizedBox(
+                height: 32,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 128, child: Text('Skill Mastery: ')),
+                    Text(masteryLevel),
+                  ],
+                ),
+              )
+            else
+              SegmentedButton(
+                segments: const [
+                  ButtonSegment(value: '0', label: Text('Untrained')),
+                  ButtonSegment(value: '1', label: Text('Partially Trained')),
+                  ButtonSegment(value: '2', label: Text('Proficient'))
                 ],
+                selected: _trainingLevel,
+                onSelectionChanged: widget.readOnlyProgression
+                    ? null
+                    : (Set<String> selection) => setState(() {
+                          _trainingLevel = selection;
+                          switch (_trainingLevel.first) {
+                            case '0':
+                              _training.trainingProgress = 0;
+                              _training.abilityIds[0] = '';
+                            case '1':
+                              _training.trainingProgress = 4;
+                              _training.abilityIds[0] = '';
+                            case '2':
+                              _training.trainingProgress = 8;
+                          }
+                        }),
               ),
+            if (_training.trainingProgress >= 8)
+              for (var i = 0; i < (_training.trainingProgress / 8).floor(); i++)
+                AbilitySelector(
+                    i,
+                    lookup.abilities
+                        .where((x) => x.skillId == widget.skillId)
+                        .toList(),
+                    _training.abilityIds[0], (item) {
+                  _training.abilityIds[0] = item!;
+                }),
             const SizedBox(
               height: 16,
             ),
