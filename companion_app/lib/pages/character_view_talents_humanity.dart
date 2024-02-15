@@ -1,5 +1,4 @@
 import 'package:elc_companion_app/models/playable_character.dart';
-import 'package:elc_companion_app/painter/hitpoint.painter.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
