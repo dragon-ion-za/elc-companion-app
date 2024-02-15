@@ -3,6 +3,7 @@ import 'package:elc_companion_app/pages/character_skills.page.dart';
 import 'package:elc_companion_app/pages/character_stats.page.dart';
 import 'package:elc_companion_app/pages/character_talents.page.dart';
 import 'package:elc_companion_app/pages/character_view_stats_actions.page.dart';
+import 'package:elc_companion_app/pages/character_view_talents_humanity.dart';
 import 'package:elc_companion_app/providers/character.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:elc_companion_app/providers/playable_character.provider.dart';
@@ -94,7 +95,7 @@ class _CharacterViewScreenState extends ConsumerState<CharacterViewScreen> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 CharacterViewStatsActionsPage(char.value!),
-                CharacterTalentsPage(),
+                CharacterViewTalentsHumanityPage(char.value!),
                 CharacterEquipmentPage(),
                 CharacterSkillsPage()
               ],
