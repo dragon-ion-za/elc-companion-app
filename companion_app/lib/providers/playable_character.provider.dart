@@ -28,6 +28,15 @@ class PlayableCharacterNotifier extends FamilyAsyncNotifier<PlayableCharacter, S
       return char;
     });
   }
+
+  void incrementSkillProgress(String skillId) {
+    var skills = state.value!.skills;
+    var skillIndex = state.value!.skills.indexWhere((x) => x.id == skillId);
+
+    skills[skillIndex].progression += 1;
+
+    state = AsyncValue.data(state.value!.copyWith(skills: skills));
+  }
 }
 
 final playableCharacterProvider =

@@ -50,6 +50,34 @@ class PlayableCharacter {
       this.actions,
       this.survivability);
 
+  PlayableCharacter copyWith(
+      {String? id,
+      String? name,
+      String? bio,
+      String? raceId,
+      String? factionId,
+      String? eraId,
+      num? accuracy,
+      List<String>? talentIds,
+      List<Equipment>? equipment,
+      List<Skill>? skills,
+      List<Action>? actions,
+      Survivability? survivability}) {
+    return PlayableCharacter(
+        id ?? this.id,
+        name ?? this.name,
+        bio ?? this.bio,
+        raceId ?? this.raceId,
+        factionId ?? this.factionId,
+        eraId ?? this.eraId,
+        accuracy ?? this.accuracy,
+        talentIds ?? this.talentIds,
+        equipment ?? this.equipment,
+        skills ?? this.skills,
+        actions ?? this.actions,
+        survivability ?? this.survivability);
+  }
+
   factory PlayableCharacter.fromJson(Map<String, dynamic> json) =>
       _$PlayableCharacterFromJson(json);
 

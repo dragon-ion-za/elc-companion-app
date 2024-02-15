@@ -4,8 +4,9 @@ part 'skill.g.dart';
 @JsonSerializable()
 class Skill {
   final String id;
-  final num progression;
   final List<String> abilityIds;
+
+  num progression;
 
   Skill(this.id, this.progression, this.abilityIds);
 
