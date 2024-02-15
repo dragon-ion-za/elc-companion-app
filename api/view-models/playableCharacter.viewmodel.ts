@@ -1,3 +1,4 @@
+import { ActionViewModel } from "./action.viewmodel";
 import { EquipableViewModel } from "./equipable.viewmodel";
 import { SkillViewModel } from "./skill.viewmodel";
 import { SurvivabilityViewModel } from "./survivability.viewmodel";
@@ -12,7 +13,9 @@ export class PlayableCharacterViewModel {
     eraId: string = '';
     imageUrl: string = '';
     survivability: SurvivabilityViewModel = new SurvivabilityViewModel();
+    accuracy: number = 0;
     talentIds: string[] = [];
     equipment: EquipableViewModel[] = [];
     skills: SkillViewModel[] = [];
+    actions: ActionViewModel[] = [];
 }

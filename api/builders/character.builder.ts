@@ -54,6 +54,8 @@ export class CharacterBuilder {
         viewModel.skills = model.skills;
         viewModel.talentIds = model.talentIds;
         viewModel.equipment = model.equipment;
+        viewModel.accuracy = CharacterRulesEngineSingleton.calculateAccuracy(model.skills);
+        viewModel.actions = CharacterRulesEngineSingleton.calculateActions(model.equipment, model.skills, viewModel.accuracy)
         viewModel.imageUrl = '???';
 
         return viewModel;

@@ -1,6 +1,8 @@
 import { AbilityModel } from "../models/ability.model";
+import { EffectModel } from "../models/effect.model";
 import { ItemModel } from "../models/item.model";
 import { AbilityViewModel } from "../view-models/ability.model";
+import { EffectViewModel } from "../view-models/effect.viewmodel";
 import { ItemViewModel } from "../view-models/item.viewmodel";
 import { LookupViewModel } from "../view-models/lookup.viewmodel";
 import { readFile } from "./read-file.service";
@@ -36,6 +38,10 @@ class LookupDataService {
 
     public getAbilities() : AbilityViewModel[] {   
         return this.getFromFileOrCache('abilities', (model: AbilityModel) => model as AbilityViewModel);
+    }
+
+    public getEffects() : EffectViewModel[] {   
+        return this.getFromFileOrCache('effects', (model: EffectModel) => model as EffectViewModel);
     }
 
     private getFromFileOrCache<TModel, TViewModel>(lookupSetName: string, builder: (model: TModel) => TViewModel): TViewModel[] {
