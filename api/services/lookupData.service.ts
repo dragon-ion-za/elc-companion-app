@@ -13,23 +13,23 @@ class LookupDataService {
     private readonly localCache: Record<string, any> = [];
 
     public getRaces() : LookupViewModel[] {
-        return this.getFromFileOrCache('races', (model: any) => new LookupViewModel(model.id, model.name, model.score ?? 0));
+        return this.getFromFileOrCache('races', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
     }
 
     public getFactions() : LookupViewModel[] {   
-        return this.getFromFileOrCache('factions', (model: any) => new LookupViewModel(model.id, model.name, model.score ?? 0));
+        return this.getFromFileOrCache('factions', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
     }
 
     public getEras() : LookupViewModel[] {   
-        return this.getFromFileOrCache('eras', (model: any) => new LookupViewModel(model.id, model.name, model.score ?? 0));
+        return this.getFromFileOrCache('eras', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
     }
 
     public getTalentsFlaws() : LookupViewModel[] {   
-        return this.getFromFileOrCache('talents_flaws', (model: any) => new LookupViewModel(model.id, model.name, model.score ?? 0));
+        return this.getFromFileOrCache('talents_flaws', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
     }
 
     public getSkills() : LookupViewModel[] {   
-        return this.getFromFileOrCache('skills', (model: any) => new LookupViewModel(model.id, model.name, model.score ?? 0));
+        return this.getFromFileOrCache('skills', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
     }
 
     public getItems() : ItemViewModel[] {   
