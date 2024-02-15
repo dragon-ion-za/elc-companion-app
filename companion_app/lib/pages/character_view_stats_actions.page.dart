@@ -44,7 +44,17 @@ class _CharacterViewStatsActionsPageState
                 Text('Mitigation: ${widget._model.survivability?.mitigationScore ?? 0}')
               ],
             ),
-            Text('Actions: ')
+            SizedBox(height: 8,),
+            Text('Actions: '),
+            for (var action in widget._model.actions)
+              ListTile(
+                leading: CircleAvatar(radius: 16, child: Text(action.cost.toString()),),
+                title: Text(action.name),
+                subtitle: Text(action.damage > 0 ? 'Acc: +${action.accuracy} | Dmg: ${action.damage}' : action.blurb),
+                trailing: IconButton(onPressed: (){ 
+                  showDialog(context: context, builder: (context) => Dialog(child: Container(padding: EdgeInsets.all(16), child: Text(action.description)),),);
+                }, icon: Icon(Icons.info)),
+              )
           ],),
         ),
       ),
