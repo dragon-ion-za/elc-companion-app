@@ -8,5 +8,6 @@
     "connectionStrings": {
         "elcContext": "mongodb://localhost:27017/"
     },
-    "dataFileRoot": "./data/"
+    "dataFileRoot": "./data/",
+    "corsAllowedHosts": ["http://localhost:8000"]
 }

@@ -1,9 +1,14 @@
 const express = require('express');
 const { auth } = require('express-oauth2-jwt-bearer');
+import cors from 'cors';
 import { router } from './router';
 
 const app = express();
 const config = require('config');
+
+app.use(cors({
+    origin: config.get('corsAllowedHosts')
+}));
 
 app.use(express.json());
 app.use(express.static('public'));
