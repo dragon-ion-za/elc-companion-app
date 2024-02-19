@@ -106,13 +106,14 @@ class _SkillManagerModalState extends ConsumerState<SkillManagerModal> {
               ),
             if (_training.trainingProgress >= 8)
               for (var i = 0; i < (_training.trainingProgress / 8).floor(); i++)
+              if (i < 4)
                 AbilitySelector(
                     i,
                     lookup.abilities
                         .where((x) => x.skillId == widget.skillId)
                         .toList(),
-                    _training.abilityIds[0], (item) {
-                  _training.abilityIds[0] = item!;
+                    _training.abilityIds[i], (item) {
+                  _training.abilityIds[i] = item!;
                 }),
             const SizedBox(
               height: 16,

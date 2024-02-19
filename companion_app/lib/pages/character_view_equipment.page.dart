@@ -50,6 +50,13 @@ class _CharacterViewEquipmentPageState
             ContainerSlot.readOnly('Chest', 'root', 'chest', getItemName('root', 'chest', widget._model.equipment, items)),
             ContainerSlot.readOnly('Rig', 'root', 'rig', getItemName('root', 'rig', widget._model.equipment, items)),
             ContainerSlot.readOnly('Belt', 'root', 'belt', getItemName('root', 'belt', widget._model.equipment, items)),
+
+            for (var container in containers)
+            ...[
+              Text('In ${container.name}'),
+              for (var slot in container.attributes.where((x) => x.type == 'container').toList())
+                ContainerSlot.readOnly(slot.slot!, container.name, slot.slot!, getItemName(container.name, slot.slot!, widget._model.equipment, items))
+            ]
           ],
         ),
       ),
