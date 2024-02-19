@@ -18,6 +18,11 @@ export class DataService<TCollectionModel extends Document> {
         return (await this.collection?.find({...filter}).toArray()) as TCollectionModel[];
     }
 
+    public async getById(id: string) : Promise<TCollectionModel> {
+        await this.connectToDb();
+        return (await this.collection?.findOne({ _id: new Object(id) })) as TCollectionModel;
+    }
+
     private async connectToDb() {
         await this.mongoClient.connect();
         const db: mongoDB.Db = this.mongoClient.db(this.DB_NAME);

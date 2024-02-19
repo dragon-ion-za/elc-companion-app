@@ -1,0 +1,26 @@
+[
+    {
+        "id": "efct_attack",
+        "title": "Attack with ",
+        "blurb": "Make an attack, targeting one being.",
+        "description": "You may use one action to make an attack against a being you can see. On a successful hit, the creature takes the damage specified by the weapon."
+    },
+    {
+        "id": "efct_removestress",
+        "title": "Remove Stress",
+        "blurb": "Remove stress from a being.",
+        "description": "You have a pool of destress points equal to your skill modifier that you may spend to remove stress. The targeted being must be able to see and hear you. You may remove stress from multiple beings so long as you have the destress points to do so."
+    },
+    {
+        "id": "efct_doubleturn",
+        "title": "Double Turn",
+        "blurb": "Grant beings an aditional turn this round.",
+        "description": "You may target up to 3 beings to grant them an aditional turn this round. The beings must be able to hear you."
+    },
+    {
+        "id": "efct_trippleattack",
+        "title": "Tripple Attack",
+        "blurb": "You may make three consecutive attacks against a target.",
+        "description": "You may attack a target three times. Each attack is treated as it's own Attack Action and an Accuracy Roll must be made for each."
+    }
+]

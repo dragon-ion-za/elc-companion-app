@@ -12,7 +12,7 @@ class CharacterNotifier extends StateNotifier<Character> {
   final Ref _ref;
 
   void updateCharacterStats({String? name, String? bio, String? raceId, String? factionId, String? eraId}) {
-    state = Character(state.id, name ?? state.name, bio ?? state.bio, raceId ?? state.raceId, factionId ?? state.factionId, eraId ?? state.eraId, state.talentIds, state.equipment, state.skills);
+    state = Character(state.id, name ?? state.name, bio ?? state.bio, raceId ?? state.raceId, factionId ?? state.factionId, eraId ?? state.eraId, state.talentIds, state.equipment, state.skills, state.survivability);
   }
 
   void toggleTalent(String talentId, bool value) {
@@ -24,7 +24,7 @@ class CharacterNotifier extends StateNotifier<Character> {
       talents.remove(talentId);
     }
 
-    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, talents, state.equipment, state.skills);
+    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, talents, state.equipment, state.skills, state.survivability);
   }
 
   void updateEquipment(String itemId, String containerId, String slotId) {
@@ -42,7 +42,7 @@ class CharacterNotifier extends StateNotifier<Character> {
       }
     }
 
-    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, state.talentIds, equipment, state.skills);
+    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, state.talentIds, equipment, state.skills, state.survivability);
   }
 
   void updateSkillProgression(String skillId, num skillProgression, List<String> abilityIds) {
@@ -52,7 +52,7 @@ class CharacterNotifier extends StateNotifier<Character> {
     skills.removeAt(skillIndex);
     skills.insert(skillIndex, Skill(skillId, skillProgression, abilityIds));
 
-    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, state.talentIds, state.equipment, skills);
+    state = Character(state.id, state.name, state.bio, state.raceId, state.factionId, state.eraId, state.talentIds, state.equipment, skills, state.survivability);
   }
 
   bool areStatsValid() {
@@ -118,6 +118,22 @@ class CharacterNotifier extends StateNotifier<Character> {
     final accessToken = _ref.read(authProvider)!.accessToken;
     await CharacterApiService(accessToken!).saveCharacter(state!);
     return true;
+  }
+
+  Future<AsyncValue<Character>> loadById(String id) async {
+    final accessToken = _ref.read(authProvider)!.accessToken;
+    return AsyncValue.guard(
+      () async {
+            final char = await CharacterApiService(accessToken!).getCharacter(id);
+
+            if (char == null) {
+              throw Exception('Character not found.');
+            }
+
+            state = char;
+            return char;
+        } 
+    );
   }
 }
 

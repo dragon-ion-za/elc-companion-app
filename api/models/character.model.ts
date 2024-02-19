@@ -14,7 +14,7 @@ export class CharacterModel implements IBaseModel {
     factionId: string = '';
     eraId: string = '';
     imageUrl: string = '';
-    hitPoints: SurvivabilityModel = new SurvivabilityModel();
+    survivability: SurvivabilityModel = new SurvivabilityModel();
     talentIds: string[] = [];
     equipment: EquipableModel[] = [];
     skills: SkillModel[] = [];

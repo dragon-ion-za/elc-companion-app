@@ -3,11 +3,12 @@
         "id": "abl_doorkicker",
         "skillId": "skl_breaching",
         "name": "Door Kicker",
-        "description": "",
+        "blurb": "Breach a room and make an attack on a target.",
+        "description": "As an action you may breach a room, roll a Braching test and on a success",
         "isElite": false,
         "attributes": [
             {
-                "type": "onBreach",
+                "type": "onAction",
                 "effectId": "efct_extraattackwithedge"
             },
             {

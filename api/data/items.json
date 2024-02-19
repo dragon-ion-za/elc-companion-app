@@ -11,6 +11,11 @@
             {
                 "type": "mod",
                 "slot": "barrel"
+            },
+            {
+                "type": "onAction",
+                "effectId": "efct_attack",
+                "value": 1
             }
         ],
         "containers": [
@@ -32,6 +37,11 @@
             {
                 "type": "mod",
                 "slot": "barrel"
+            },
+            {
+                "type": "onAction",
+                "effectId": "efct_attack",
+                "value": 1
             }
         ],
         "containers": [
@@ -51,8 +61,9 @@
                 "value": 1
             },
             {
-                "type": "utility",
-                "effectId": "efct_togglenightvision"
+                "type": "onAction",
+                "effectId": "efct_togglenightvision",
+                "value": 1
             }
         ],
         "containers": [
@@ -111,6 +122,11 @@
         "attributes": [
             {
                 "type": "cost",
+                "value": 1
+            },
+            {
+                "type": "onAction",
+                "effectId": "efct_attack",
                 "value": 1
             }
         ],

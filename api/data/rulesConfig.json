@@ -1,0 +1,18 @@
+{
+    "characterRules" : {
+        "baseHp": 3,
+        "baseMitigation": 0
+    },
+    "itemRules": {
+        "baseDamage": 1,
+        "baseActionCost": 1
+    },
+    "skillProgressionBonuses": [
+        0,
+        1,
+        1,
+        2,
+        2,
+        3
+    ]
+}

@@ -13,7 +13,8 @@ class SkillTrainingIndicatorPainter extends CustomPainter {
     canvas.clipRect(backgroundRect);
 
     Paint untrainedPaint = Paint()..color = Colors.purple[100]!;
-    Paint trainedPainter = Paint()..color = Colors.green;
+    Paint trainingPainter = Paint()..color = Colors.green;
+    Paint trainedPainter = Paint()..color = Colors.purple[200]!;
     Paint experiencedPainter = Paint()..color = Colors.purple[400]!;
     Paint masteredPainter = Paint()..color = Colors.purple[600]!;
     Paint elitePainter = Paint()..color = Colors.purple[900]!;
@@ -23,7 +24,7 @@ class SkillTrainingIndicatorPainter extends CustomPainter {
     final masteryLevel = (_progression / 8).floor();
     final currentLevelProgress = _progression - (masteryLevel * 8);
 
-    final label = TextSpan(text: masteryLevel == 4 ? '3' : masteryLevel > 1 ? '2' : masteryLevel.toString() , style: TextStyle(color: Colors.white));
+    final label = TextSpan(text: masteryLevel == 5 ? 'E' : masteryLevel == 4 ? '3' : masteryLevel > 1 ? '2' : masteryLevel.toString() , style: TextStyle(color: Colors.white));
       final textPainter = TextPainter(text: label, textDirection: TextDirection.ltr);
       textPainter.layout();
       textPainter.paint(canvas, Offset((textPainter.width / 2) + (24 - textPainter.width), (textPainter.height / 2) + (24 - textPainter.height)));
@@ -31,14 +32,16 @@ class SkillTrainingIndicatorPainter extends CustomPainter {
     for (var i = 0; i < 8; i ++) {
       var painter = untrainedPaint;
 
-      if (masteryLevel == 4) {
+      if (masteryLevel == 5) {
         painter = elitePainter;
       } else if (i + 1 <= currentLevelProgress) {
-        painter = trainedPainter;
-      } else if (masteryLevel > 1) {
+        painter = trainingPainter;
+      } else if (masteryLevel > 3) {
         painter = masteredPainter;
-      } else if (masteryLevel == 1) {
+      } else if (masteryLevel > 1) {
         painter = experiencedPainter;
+      } else if (masteryLevel == 1) {
+        painter = trainedPainter;
       }
 
       final rads = (i * 45) * (pi/180);
