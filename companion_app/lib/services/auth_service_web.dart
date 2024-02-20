@@ -50,11 +50,12 @@ class AuthServiceWeb {
   }
 
   Future logout() async {
+    _secureStorage.delete(key: REFRESH_TOKEN_KEY);
     await _appAuth.logout();
   }
 
   Future<Credentials> _doLogin() async {
-    return await _appAuth.loginWithPopup(audience: API_AUDIENCE, scopes: { 'openid', 'profile', 'offline_access', 'email', 'api' });
+    return await _appAuth.loginWithPopup(audience: API_AUDIENCE, scopes: { 'openid', 'profile', 'offline_access', 'email', 'https://api.elc.co.za/.default' });
   }
 
   Future<Credentials?> _doRefresh(String refreshToken) async {

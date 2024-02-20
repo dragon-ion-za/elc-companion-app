@@ -90,7 +90,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     width: double.infinity,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [

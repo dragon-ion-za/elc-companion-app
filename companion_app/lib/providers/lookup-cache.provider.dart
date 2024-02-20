@@ -17,7 +17,7 @@ class LookupCacheNotifier extends AsyncNotifier<LookupCache> {
   Future loadCache() async {
     state = const AsyncLoading();
 
-    final accessToken = ref.read(authProvider)!.accessToken;
+    final accessToken = ref.watch(authProvider)!.accessToken;
     state = await AsyncValue.guard(() async {
       final races = await LookupApiService(accessToken!).getRaces();
       final factions = await LookupApiService(accessToken!).getFactions();

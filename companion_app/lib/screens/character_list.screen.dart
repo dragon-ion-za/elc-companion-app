@@ -3,6 +3,7 @@ import 'package:elc_companion_app/providers/character-list.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:elc_companion_app/screens/character_modification.screen.dart';
 import 'package:elc_companion_app/screens/character_view.screen.dart';
+import 'package:elc_companion_app/screens/landing.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +24,7 @@ class CharacterListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final characters = ref.watch(characterListProvider);
     final lookupCache = ref.watch(lookupCacheProvider);
-    final authNotifier = ref.read(authProvider.notifier);
+    final authNotifier = ref.watch(authProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +43,7 @@ class CharacterListScreen extends ConsumerWidget {
           const DrawerHeader(child: Text('ELC Companion App'),),
           ListTile(
             title: const Text('Logout'),
-            onTap: () async { await authNotifier.logoutUser(); },
+            onTap: () async { await authNotifier.logoutUser(); Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => const LandingScreen())); },
           )
         ],
       )),

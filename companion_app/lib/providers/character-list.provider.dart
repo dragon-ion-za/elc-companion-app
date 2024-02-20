@@ -17,7 +17,7 @@ class CharacterListProviderNotifier extends AsyncNotifier<List<Character>> {
   Future loadList() async {
     state = const AsyncLoading();
 
-    final accessToken = ref.read(authProvider)!.accessToken;
+    final accessToken = ref.watch(authProvider)!.accessToken;
     state = await AsyncValue.guard(
         () async => await CharacterApiService(accessToken!).getCharacters());
   }

@@ -50,6 +50,8 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
       AuthService.instance.logout(state!.idToken!);
     }
 
+    state = null;
+
     return true;
   }
 

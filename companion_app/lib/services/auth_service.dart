@@ -44,6 +44,7 @@ class AuthService {
 
   Future logout(String idToken) async {
     var result = await _appAuth.endSession(EndSessionRequest(idTokenHint: idToken));
+    _secureStorage.delete(key: REFRESH_TOKEN_KEY);
     print(result!.state);
   }
 
