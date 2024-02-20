@@ -43,6 +43,16 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     return LoginStatus.loggedIn;
   }
 
+  Future<bool> logoutUser() async {
+    if (kIsWeb) {
+      AuthServiceWeb.instance.logout();
+    } else {
+      AuthService.instance.logout(state!.idToken!);
+    }
+
+    return true;
+  }
+
   Future<bool> registerUser(String username) async {
     if (state == null) throw Exception('Auth state is NULL!');
 

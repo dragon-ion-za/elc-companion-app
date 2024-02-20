@@ -1,3 +1,4 @@
+import 'package:elc_companion_app/providers/auth.provider.dart';
 import 'package:elc_companion_app/providers/character-list.provider.dart';
 import 'package:elc_companion_app/providers/lookup-cache.provider.dart';
 import 'package:elc_companion_app/screens/character_modification.screen.dart';
@@ -22,6 +23,7 @@ class CharacterListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final characters = ref.watch(characterListProvider);
     final lookupCache = ref.watch(lookupCacheProvider);
+    final authNotifier = ref.read(authProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +36,16 @@ class CharacterListScreen extends ConsumerWidget {
               icon: const Icon(Icons.add))
         ],
       ),
+      drawer: Drawer(child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(child: Text('ELC Companion App'),),
+          ListTile(
+            title: const Text('Logout'),
+            onTap: () async { await authNotifier.logoutUser(); },
+          )
+        ],
+      )),
       body: Container(
         width: double.infinity,
         height: double.infinity,

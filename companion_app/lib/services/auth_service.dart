@@ -16,10 +16,6 @@ class AuthService {
   final FlutterAppAuth _appAuth = const FlutterAppAuth();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  Auth0User? profile;
-  Auth0IdToken? idToken;
-  String? auth0AccessToken;
-
   Future<(String message, bool success, String? idToken, String? accessToken)>
       login() async {
     try {
@@ -44,6 +40,11 @@ class AuthService {
       print('error on Refresh Token: $e - stack: $s');
       return ('Unkown Error!', false, null, null);
     }
+  }
+
+  Future logout(String idToken) async {
+    var result = await _appAuth.endSession(EndSessionRequest(idTokenHint: idToken));
+    print(result!.state);
   }
 
   Future<AuthorizationTokenResponse?> _doLogin() async {

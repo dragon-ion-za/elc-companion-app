@@ -5,7 +5,6 @@ import 'package:elc_companion_app/helpers/constants.dart';
 import 'package:elc_companion_app/models/auth/auth0_id_token.dart';
 import 'package:elc_companion_app/models/auth/auth0_user.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,6 +47,10 @@ class AuthServiceWeb {
       print('error on Refresh Token: $e - stack: $s');
       return ('Unkown Error!', false, null, null);
     }
+  }
+
+  Future logout() async {
+    await _appAuth.logout();
   }
 
   Future<Credentials> _doLogin() async {
