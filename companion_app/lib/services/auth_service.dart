@@ -35,6 +35,7 @@ class AuthService {
         return ('Login result invalid.', false, null, null);
       }
     } on PlatformException {
+      _secureStorage.delete(key: REFRESH_TOKEN_KEY);
       return ('User has cancelled or no internet!', false, null, null);
     } catch (e, s) {
       print('error on Refresh Token: $e - stack: $s');
