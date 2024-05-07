@@ -1,0 +1,9 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "echotest",
+        "command": "Copy-Item ./companion_app/configs/app_settings.windows.json ./companion_app/assets/cfg/app_settings.json",
+        "args": [],
+        "type": "shell"
+    }]
+}
