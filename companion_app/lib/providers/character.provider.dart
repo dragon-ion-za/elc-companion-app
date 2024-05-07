@@ -115,13 +115,13 @@ class CharacterNotifier extends StateNotifier<Character> {
   }
 
   Future<bool> save() async {
-    final accessToken = _ref.read(authProvider)!.accessToken;
+    final accessToken = _ref.watch(authProvider)!.accessToken;
     await CharacterApiService(accessToken!).saveCharacter(state!);
     return true;
   }
 
   Future<AsyncValue<Character>> loadById(String id) async {
-    final accessToken = _ref.read(authProvider)!.accessToken;
+    final accessToken = _ref.watch(authProvider)!.accessToken;
     return AsyncValue.guard(
       () async {
             final char = await CharacterApiService(accessToken!).getCharacter(id);

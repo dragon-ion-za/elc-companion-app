@@ -1,7 +1,3 @@
-import 'package:elc_companion_app/pages/character_equipment.page.dart';
-import 'package:elc_companion_app/pages/character_skills.page.dart';
-import 'package:elc_companion_app/pages/character_stats.page.dart';
-import 'package:elc_companion_app/pages/character_talents.page.dart';
 import 'package:elc_companion_app/pages/character_view_equipment.page.dart';
 import 'package:elc_companion_app/pages/character_view_skills.page.dart';
 import 'package:elc_companion_app/pages/character_view_stats_actions.page.dart';

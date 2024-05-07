@@ -18,7 +18,7 @@ class PlayableCharacterNotifier extends FamilyAsyncNotifier<PlayableCharacter, S
   Future loadById(String id) async {
     state = const AsyncLoading();
 
-    final accessToken = ref.read(authProvider)!.accessToken;
+    final accessToken = ref.watch(authProvider)!.accessToken;
     state = await AsyncValue.guard(() async {
       final char = await CharacterApiService(accessToken!).getPlayableCharacter(id);
 

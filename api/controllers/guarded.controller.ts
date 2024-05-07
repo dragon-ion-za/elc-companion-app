@@ -16,7 +16,7 @@ export abstract class GuardedBaseController<TModel extends IBaseModel, TViewMode
 
     public get = async (req: any, res: any, next: any) => {
         try {
-            if (this.dataService == null) this.initDataService(req.auth.payload.sub);
+            this.initDataService(req.auth.payload.sub);
 
             let data: TModel[] = await this.dataService!.queryData({});
             let viewData: TViewModel[] = [];
@@ -31,7 +31,7 @@ export abstract class GuardedBaseController<TModel extends IBaseModel, TViewMode
 
     public getById = async (req: any, res: any, next: any) => {
         try {
-            if (this.dataService == null) this.initDataService(req.auth.payload.sub);
+            this.initDataService(req.auth.payload.sub);
             let id: string = req.params.id;
             let data: TModel = await this.dataService!.getById(id);
             
@@ -44,7 +44,7 @@ export abstract class GuardedBaseController<TModel extends IBaseModel, TViewMode
 
     public post = async (req: any, res: any, next: any) => {
         try {
-            if (this.dataService == null) this.initDataService(req.auth.payload.sub);
+            this.initDataService(req.auth.payload.sub);
 
             let rawData = {...(req.body as TViewModel), _id: new ObjectId()} as TViewModel;
             let data = this.toModel(rawData);

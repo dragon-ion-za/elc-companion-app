@@ -1,41 +1,44 @@
 import 'dart:convert';
+import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:auth0_flutter/auth0_flutter_web.dart';
 import 'package:elc_companion_app/helpers/constants.dart';
 import 'package:elc_companion_app/models/auth/auth0_id_token.dart';
 import 'package:elc_companion_app/models/auth/auth0_user.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-class AuthService {
-  static final AuthService instance = AuthService._internal();
+class AuthServiceWeb {
+  static final AuthServiceWeb instance = AuthServiceWeb._internal();
 
-  factory AuthService() => instance;
-  AuthService._internal();
+  factory AuthServiceWeb() => instance;
+  AuthServiceWeb._internal();
 
-  final FlutterAppAuth _appAuth = const FlutterAppAuth();
+  final Auth0Web _appAuth = Auth0Web(const String.fromEnvironment('AUTH0_DOMAIN'), const String.fromEnvironment('AUTH0_CLIENT_ID'));
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
+  Auth0User? profile;
+  Auth0IdToken? idToken;
+  String? auth0AccessToken;
 
   Future<(String message, bool success, String? idToken, String? accessToken)>
       login() async {
     try {
-      final storedRefreshToken =
-          await _secureStorage.read(key: REFRESH_TOKEN_KEY);
+      Credentials? result;
+      await _appAuth.onLoad();
 
-      TokenResponse? result;
-      if (storedRefreshToken == null) {
+      if (!await _appAuth.hasValidCredentials()) {
         result = await _doLogin();
       } else {
-        result = await _doRefresh(storedRefreshToken);
+        result = await _doRefresh('');
       }
 
       if (await _handleLoginResult(result)) {
-        return ('Logged in.', true, result!.idToken, result.accessToken);
+        return ('Logged in.', true, result!.idToken, result!.accessToken);
       } else {
         return ('Login result invalid.', false, null, null);
       }
     } on PlatformException {
-      _secureStorage.delete(key: REFRESH_TOKEN_KEY);
       return ('User has cancelled or no internet!', false, null, null);
     } catch (e, s) {
       print('error on Refresh Token: $e - stack: $s');
@@ -43,33 +46,16 @@ class AuthService {
     }
   }
 
-  Future logout(String idToken) async {
-    var result = await _appAuth.endSession(EndSessionRequest(idTokenHint: idToken));
-    _secureStorage.delete(key: REFRESH_TOKEN_KEY);
-    print(result!.state);
+  Future logout() async {
+    await _appAuth.logout();
   }
 
-  Future<AuthorizationTokenResponse?> _doLogin() async {
-    final authorizationTokenRequest = AuthorizationTokenRequest(
-      AUTH0_CLIENT_ID,
-      AUTH0_REDIRECT_URI,
-      issuer: AUTH0_ISSUER,
-      scopes: ['openid', 'profile', 'offline_access', 'email', 'api'],
-      additionalParameters: {'audience': API_AUDIENCE},
-    );
-
-    return await _appAuth.authorizeAndExchangeCode(
-      authorizationTokenRequest,
-    );
+  Future<Credentials> _doLogin() async {
+    return await _appAuth.loginWithPopup(audience: API_AUDIENCE, scopes: { 'openid', 'profile', 'offline_access', 'email', 'https://api.elc.co.za/.default' });
   }
 
-  Future<TokenResponse?> _doRefresh(String refreshToken) async {
-    return await _appAuth.token(
-      TokenRequest(AUTH0_CLIENT_ID, AUTH0_REDIRECT_URI,
-          issuer: AUTH0_ISSUER,
-          refreshToken: refreshToken,
-          additionalParameters: {'audience': API_AUDIENCE}),
-    );
+  Future<Credentials?> _doRefresh(String refreshToken) async {
+    return await _appAuth.credentials(audience: API_AUDIENCE, scopes: { 'openid', 'profile', 'offline_access', 'email', 'https://api.elc.co.za/.default' });
   }
 
   Auth0IdToken parseIdToken(String idToken) {
@@ -103,17 +89,6 @@ class AuthService {
   Future<bool> _handleLoginResult(result) async {
     final bool isValidResult =
         result != null && result.accessToken != null && result.idToken != null;
-
-    if (isValidResult) {
-      if (result.refreshToken != null) {
-        await _secureStorage.write(
-          key: REFRESH_TOKEN_KEY,
-          value: result.refreshToken,
-        );
-      } else {
-        _secureStorage.delete(key: REFRESH_TOKEN_KEY);
-      }
-    }
 
     return isValidResult;
   }

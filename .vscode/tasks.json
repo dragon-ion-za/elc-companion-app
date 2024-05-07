@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "copyConfigWeb",
+            "command": "Copy-Item ./companion_app/configs/app_settings.web.json ./companion_app/assets/cfg/app_settings.json",
+            "args": [],
+            "type": "shell"
+        },
+        {
+            "label": "copyConfigDroid",
+            "command": "Copy-Item ./companion_app/configs/app_settings.android.json ./companion_app/assets/cfg/app_settings.json",
+            "args": [],
+            "type": "shell"
+        },
+        {
+            "label": "launchEmulator",
+            "command": "flutter emulators --launch Pixel_3a_API_34",
+            "args": [],
+            "type": "shell"
+        },
+        {
+            "label": "androidPreStart",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "launchEmulator",
+                "copyConfigDroid"
+            ]
+        }
+    ]
+}

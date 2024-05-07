@@ -11,7 +11,7 @@ class UserApiService {
 
   String get _baseUrl => GlobalConfiguration().getValue('apiUrl');
 
-  Map<String, String> get _headers => {'Authorization': 'Bearer $_accessToken'};
+  Map<String, String> get _headers => {'Authorization': 'Bearer $_accessToken', 'Content-Type': 'application/json'};
 
   Future<User?> getUser(String id) async {
     final url = Uri.http(_baseUrl, 'users/$id');
@@ -31,7 +31,7 @@ class UserApiService {
   Future createUser(User user) async {
     final url = Uri.http(_baseUrl, 'users');
     final response = await http.post(url,
-        headers: {'Content-Type': 'application/json'},
+        headers: _headers,
         body: json.encode(user.toJson()));
 
     if (response.body.isEmpty) {

@@ -2,6 +2,8 @@ import 'package:elc_companion_app/models/identity.dart';
 import 'package:elc_companion_app/models/user.dart';
 import 'package:elc_companion_app/services/api_services/user_api.service.dart';
 import 'package:elc_companion_app/services/auth_service.dart';
+import 'package:elc_companion_app/services/auth_service_web.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum LoginStatus { loggedIn, newUser, loggedOut }
@@ -15,14 +17,16 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
 
   Future<LoginStatus> loginUser() async {
     final (String message, bool success, String? idToken, String? accessToken) =
-        await AuthService.instance.login();
+        kIsWeb
+            ? await AuthServiceWeb.instance.login()
+            : await AuthService.instance.login();
 
     if (!success) {
       throw Exception(message);
     }
 
     final auth0IdToken = AuthService.instance.parseIdToken(idToken!);
-    
+
     User? user =
         await UserApiService(accessToken!).getUser(auth0IdToken.userId);
 
@@ -37,6 +41,18 @@ class AuthProviderNotifier extends StateNotifier<Identity?> {
     }
 
     return LoginStatus.loggedIn;
+  }
+
+  Future<bool> logoutUser() async {
+    if (kIsWeb) {
+      AuthServiceWeb.instance.logout();
+    } else {
+      AuthService.instance.logout(state!.idToken!);
+    }
+
+    state = null;
+
+    return true;
   }
 
   Future<bool> registerUser(String username) async {

@@ -44,11 +44,11 @@ android {
         applicationId "ddd.elc.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders += ['appAuthRedirectScheme': 'ddd.elc.app']
+        manifestPlaceholders += ['appAuthRedirectScheme': 'ddd.elc.app', auth0Domain: "ddd.elc.app", auth0Scheme: "https"]
     }
 
     buildTypes {
