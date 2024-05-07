@@ -139,3 +139,4 @@ app.*.symbols
 /.vs
 **/node_modules
 /api/config/local.json
+/companion_app/assets/cfg/app_settings.json
