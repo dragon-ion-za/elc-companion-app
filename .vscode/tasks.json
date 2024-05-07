@@ -1,8 +1,13 @@
 {
     "version": "2.0.0",
     "tasks": [{
-        "label": "echotest",
+        "label": "copyConfigWin",
         "command": "Copy-Item ./companion_app/configs/app_settings.windows.json ./companion_app/assets/cfg/app_settings.json",
+        "args": [],
+        "type": "shell"
+    },{
+        "label": "copyConfigDroid",
+        "command": "Copy-Item ./companion_app/configs/app_settings.android.json ./companion_app/assets/cfg/app_settings.json",
         "args": [],
         "type": "shell"
     }]
