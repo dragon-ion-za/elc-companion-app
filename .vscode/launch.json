@@ -6,21 +6,23 @@
     "configurations": [
         {
             "name": "companion_app (Android)",
-            "preLaunchTask": "copyConfigDroid",
+            "preLaunchTask": "androidPreStart",
             "cwd": "companion_app",
             "request": "launch",
             "type": "dart",
+            "deviceId": "emulator-5554",
             "args": [
                 "--dart-define", "AUTH0_DOMAIN=xxxxx",
                 "--dart-define", "AUTH0_CLIENT_ID=xxxxx"
             ]
         },
         {
-            "name": "companion_app (Windows)",
-            "preLaunchTask": "copyConfigWin",
+            "name": "companion_app (Web)",
+            "preLaunchTask": "copyConfigWeb",
             "cwd": "companion_app",
             "request": "launch",
             "type": "dart",
+            "deviceId": "chrome",
             "args": [
                 "--dart-define", "AUTH0_DOMAIN=xxxxx",
                 "--dart-define", "AUTH0_CLIENT_ID=xxxxx"
