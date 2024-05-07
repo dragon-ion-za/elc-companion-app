@@ -24,20 +24,17 @@ class AuthServiceWeb {
   Future<(String message, bool success, String? idToken, String? accessToken)>
       login() async {
     try {
-      await _appAuth.onLoad();
-      
-      final storedRefreshToken =
-          await _secureStorage.read(key: REFRESH_TOKEN_KEY);
-
       Credentials? result;
-      if (storedRefreshToken == null) {
+      await _appAuth.onLoad();
+
+      if (!await _appAuth.hasValidCredentials()) {
         result = await _doLogin();
       } else {
-        result = await _doRefresh(storedRefreshToken);
+        result = await _doRefresh('');
       }
 
       if (await _handleLoginResult(result)) {
-        return ('Logged in.', true, result!.idToken, result.accessToken);
+        return ('Logged in.', true, result!.idToken, result!.accessToken);
       } else {
         return ('Login result invalid.', false, null, null);
       }
@@ -50,7 +47,6 @@ class AuthServiceWeb {
   }
 
   Future logout() async {
-    _secureStorage.delete(key: REFRESH_TOKEN_KEY);
     await _appAuth.logout();
   }
 
@@ -59,7 +55,7 @@ class AuthServiceWeb {
   }
 
   Future<Credentials?> _doRefresh(String refreshToken) async {
-    return null;
+    return await _appAuth.credentials(audience: API_AUDIENCE, scopes: { 'openid', 'profile', 'offline_access', 'email', 'https://api.elc.co.za/.default' });
   }
 
   Auth0IdToken parseIdToken(String idToken) {
@@ -93,17 +89,6 @@ class AuthServiceWeb {
   Future<bool> _handleLoginResult(result) async {
     final bool isValidResult =
         result != null && result.accessToken != null && result.idToken != null;
-
-    if (isValidResult) {
-      if (result.refreshToken != null) {
-        await _secureStorage.write(
-          key: REFRESH_TOKEN_KEY,
-          value: result.refreshToken,
-        );
-      } else {
-        _secureStorage.delete(key: REFRESH_TOKEN_KEY);
-      }
-    }
 
     return isValidResult;
   }
