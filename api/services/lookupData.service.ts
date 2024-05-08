@@ -1,8 +1,4 @@
-import { AbilityModel } from "../models/ability.model";
-import { EffectModel } from "../models/effect.model";
 import { ItemModel } from "../models/item.model";
-import { AbilityViewModel } from "../view-models/ability.model";
-import { EffectViewModel } from "../view-models/effect.viewmodel";
 import { ItemViewModel } from "../view-models/item.viewmodel";
 import { LookupViewModel } from "../view-models/lookup.viewmodel";
 import { readFile } from "./read-file.service";
@@ -24,8 +20,8 @@ class LookupDataService {
         return this.getFromFileOrCache('eras', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
     }
 
-    public getTalentsFlaws() : LookupViewModel[] {   
-        return this.getFromFileOrCache('talents_flaws', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
+    public getTalentsFlaws() : ItemViewModel[] {   
+        return this.getFromFileOrCache('talents_flaws', (model: ItemModel) => model as ItemViewModel);
     }
 
     public getSkills() : LookupViewModel[] {   
@@ -36,12 +32,12 @@ class LookupDataService {
         return this.getFromFileOrCache('items', (model: ItemModel) => model as ItemViewModel);
     }
 
-    public getAbilities() : AbilityViewModel[] {   
-        return this.getFromFileOrCache('abilities', (model: AbilityModel) => model as AbilityViewModel);
+    public getAbilities() : ItemViewModel[] {   
+        return this.getFromFileOrCache('abilities', (model: ItemModel) => model as ItemViewModel);
     }
 
-    public getEffects() : EffectViewModel[] {   
-        return this.getFromFileOrCache('effects', (model: EffectModel) => model as EffectViewModel);
+    public getEffects() : ItemViewModel[] {   
+        return this.getFromFileOrCache('effects', (model: ItemModel) => model as ItemViewModel);
     }
 
     private getFromFileOrCache<TModel, TViewModel>(lookupSetName: string, builder: (model: TModel) => TViewModel): TViewModel[] {

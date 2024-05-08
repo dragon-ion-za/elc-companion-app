@@ -95,7 +95,7 @@
             },
             {
                 "type": 2,
-                "targetId": "stat_mitigation",
+                "targetId": "stat_hitpoint",
                 "value": "1"
             }
         ]

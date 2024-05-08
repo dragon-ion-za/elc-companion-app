@@ -1,6 +1,7 @@
+import { AttributeTypes } from "../constants/attributeTypes.enum";
+
 export class AttributeViewModel {
-    type: string = '';
-    slot: string = '';
-    effectId: string = '';
-    value: number = 0;
+    type: AttributeTypes = 0;
+    targetId: string = '';
+    value: string = '';
 }

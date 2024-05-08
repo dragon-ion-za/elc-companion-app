@@ -4,125 +4,104 @@ import { RulesConfig } from "../models/rulesConfig.model";
 import { EquipableModel } from "../models/equipable.model";
 import { LookupDataServiceSingleton } from "../services/lookupData.service";
 import { SkillModel } from "../models/skill.model";
-import { ActionViewModel } from "../view-models/action.viewmodel";
+import { ItemConstants } from "../constants/item.constants";
+import { AttributeTypes } from "../constants/attributeTypes.enum";
 
 class CharacterRulesEngine {
     private rulesCache: RulesConfig | undefined = undefined;
 
-    public calculateHitpoints(equipment: EquipableModel[]) : number {
+    public calculateHitpoints(equipment: EquipableModel[], talentIds: string[]) : number {
         if (this.rulesCache === undefined) this.initRulesCache();
 
         var hp = this.rulesCache!.characterRules.baseHp;
-
-        equipment.filter((x) => x.slotId === 'chest' && x.containerId === 'root')
-        .forEach((x) => {
-            var item = LookupDataServiceSingleton.getItems().filter((y) => y.id == x.itemId)[0];
-
-            if (item !== undefined) {
-                var armour = item.attributes.filter((y) => y.type === 'armour')[0];
-
-                if (armour !== undefined) {
-                    hp += armour.value;
-                }
-            }
-        });
+        hp += this.calculateValueFromEquipment(equipment, ItemConstants.SLOT_CHEST, ItemConstants.STAT_HITPOINT);
+        hp += this.calculateValueFromTalentsFlaws(talentIds, ItemConstants.STAT_HITPOINT);
 
         return hp;
     }
 
-    public calculateMitigationScore(equipment: EquipableModel[], skills: SkillModel[]) : number {
+    public calculateMitigationScore(equipment: EquipableModel[], talentIds: string[], skills: SkillModel[]) : number {
         if (this.rulesCache === undefined) this.initRulesCache();
 
         var mitigation = this.rulesCache!.characterRules.baseMitigation;
-
-        equipment.filter((x) => x.slotId === 'chest' && x.containerId === 'root')
-        .forEach((x) => {
-            var item = LookupDataServiceSingleton.getItems().filter((y) => y.id == x.itemId)[0];
-
-            if (item !== undefined) {
-                var mitigationBonus = item.attributes.filter((y) => y.type === 'mitigation')[0];
-
-                if (mitigationBonus !== undefined) {
-                    mitigation += mitigationBonus.value;
-                }
-            }
-        });
-
-        mitigation += this.rulesCache!.skillProgressionBonuses[Math.floor(skills.find((x) => x.id === 'skl_combatsurvival')?.progression ?? 0 / 8)] ?? 0;
+        mitigation += this.calculateValueFromEquipment(equipment, ItemConstants.SLOT_CHEST, ItemConstants.STAT_MITIGATION);
+        mitigation += this.calculateValueFromTalentsFlaws(talentIds, ItemConstants.STAT_MITIGATION);
+        mitigation += this.calculateValueFromSkills(skills, ItemConstants.SKILL_COMBATSURVIVAL);
 
         return mitigation;
     }
 
-    public calculateAccuracy(skills: SkillModel[]) : number {
+    public calculateWeaponAccuracy(weapon: EquipableModel, talentIds: string[], skills: SkillModel[]) : number {
         if (this.rulesCache === undefined) this.initRulesCache();
 
         let accuracy = 0;
-
-        accuracy += this.rulesCache!.skillProgressionBonuses[Math.floor(skills.find((x) => x.id === 'skl_weaponstraining')?.progression ?? 0 / 8)] ?? 0;
+        accuracy += this.calculateValueFromWeaponMods(weapon, ItemConstants.TEST_ACCURACY);
+        accuracy += this.calculateValueFromTalentsFlaws(talentIds, ItemConstants.TEST_ACCURACY);
+        accuracy += this.calculateValueFromSkills(skills, ItemConstants.SKILL_WEAPONSTRAINING);
 
         return accuracy;
-    }
-
-    public calculateActions(equipment: EquipableModel[], skills: SkillModel[], accuracyBonus: number) : ActionViewModel[] {
-        if (this.rulesCache === undefined) this.initRulesCache();
-
-        let actions: ActionViewModel[] = [];
-
-        let equipmentIds = equipment.map(x => x.itemId);
-        var items = LookupDataServiceSingleton.getItems();
-        let actionItems = items.filter(x => equipmentIds.includes(x.id) && x.attributes.find(y => y.type === 'onAction') !== undefined);
-
-        actionItems.forEach(x => {
-            x.attributes.filter(y => y.type === 'onAction').forEach(y => {
-                let effect = LookupDataServiceSingleton.getEffects().find(z => z.id === y.effectId);
-
-                if (effect !== undefined) {
-                    let action = new ActionViewModel();
-
-                    action.name = `${effect.title}${x.name}`;
-                    action.blurb = effect.blurb;
-                    action.description = effect.description;
-                    action.damage = this.rulesCache!.itemRules.baseDamage;
-                    action.cost = this.rulesCache!.itemRules.baseActionCost;
-                    action.accuracy = accuracyBonus;
-    
-                    actions.push(action);
-                } else {
-                    console.error(`Effect with ID ${y.effectId} is undefined!`);
-                }
-            });
-        });
-
-        let abilityIds = skills.flatMap(x => x.abilityIds);
-        var abilities = LookupDataServiceSingleton.getAbilities();
-        let actionAbilities = abilities.filter(x => abilityIds.includes(x.id) && x.attributes.find(y => y.type === 'onAction') !== undefined);
-
-        actionAbilities.forEach(x => {
-            x.attributes.filter(y => y.type === 'onAction').forEach(y => {
-                let effect = LookupDataServiceSingleton.getEffects().find(z => z.id === y.effectId);
-                let cost = x.attributes.find(z => z.type === 'costActions');
-
-                if (effect !== undefined) {
-                    let action = new ActionViewModel();
-
-                    action.name = `${x.name}`;
-                    action.blurb = effect.blurb;
-                    action.description = effect.description;
-                    action.cost = cost?.value ?? this.rulesCache!.itemRules.baseActionCost;
-    
-                    actions.push(action);
-                } else {
-                    console.error(`Effect with ID ${y.effectId} is undefined!`);
-                }
-            });
-        });
-
-        return actions;
     }
 
     private initRulesCache() {
         let json = readFile(`${config.get("dataFileRoot")}rulesConfig.json`);
         this.rulesCache = json as RulesConfig;
+    }
+
+    private calculateValueFromWeaponMods(weapon: EquipableModel, targetId: string) : number {
+        let value: number = 0;
+
+        var item = LookupDataServiceSingleton.getItems().filter((y) => y.id == weapon.itemId)[0];
+
+        if (item !== undefined) {
+            var bonuses = item.attributes.filter((y) => y.type === AttributeTypes.Bonus && y.targetId === targetId);
+
+            bonuses.forEach((bonus) => {
+                value += parseInt(bonus.value);
+            });
+        }
+
+        return value;
+    }
+
+    private calculateValueFromEquipment(equipment: EquipableModel[], slotId: string, targetId: string) : number {
+        let value: number = 0;
+
+        equipment.filter((x) => x.slotId === slotId)
+        .forEach((x) => {
+            var item = LookupDataServiceSingleton.getItems().filter((y) => y.id == x.itemId)[0];
+
+            if (item !== undefined) {
+                var bonuses = item.attributes.filter((y) => y.type === AttributeTypes.Bonus && y.targetId === targetId);
+
+                bonuses.forEach((bonus) => {
+                    value += parseInt(bonus.value);
+                });
+            }
+        });
+
+        return value;
+    }
+
+    private calculateValueFromTalentsFlaws(talentIds: string[], targetId: string) : number {
+        let value: number = 0;
+
+        talentIds.forEach((x) => {
+            var talent = LookupDataServiceSingleton.getTalentsFlaws().filter((y) => y.id == x)[0];
+
+            if (talent !== undefined) {
+                var bonuses = talent.attributes.filter((y) => y.type === AttributeTypes.Bonus && y.targetId === targetId);
+
+                bonuses.forEach((bonus) => {
+                    value += parseInt(bonus.value);
+                });
+            }
+        });
+
+        return value;
+    }
+
+    private calculateValueFromSkills(skills: SkillModel[], skillId: string) : number {
+        return this.rulesCache!.skillProgressionBonuses[Math.floor(skills.find((x) => x.id === skillId)?.progression ?? 0 / 8)] ?? 0;
     }
 }
 
