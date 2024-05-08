@@ -1,88 +1,104 @@
 [
     {
         "id": "abl_doorkicker",
-        "skillId": "skl_breaching",
         "name": "Door Kicker",
         "blurb": "Breach a room and make an attack on a target.",
-        "description": "As an action you may breach a room, roll a Braching test and on a success",
-        "isElite": false,
+        "description": "As an action you may breach a room, roll a Breaching test and on a success",
         "attributes": [
             {
-                "type": "onAction",
-                "effectId": "efct_extraattackwithedge"
+                "type": 3,
+                "value": "onAction"
             },
             {
-                "type": "reset",
-                "cooldownId": "cdwn_perengagement"
+                "type": 4,
+                "targetId": "efct_extraattackwithedge"
+            },
+            {
+                "type": 5,
+                "targetId": "cdwn_perengagement"
             }
-        ]
+        ],
+        "tags": ["faction_all", "era_all", "skl_breaching"]
     },
     {
-        "id": "abl_breathexcercises",
-        "skillId": "skl_fieldmedic",
-        "name": "Breath Excercises",
-        "description": "",
-        "isElite": false,
+        "id": "abl_breathexercises",
+        "name": "Breath Exercises",
+        "blurb": "Reduce the stress level of a Being that can hear you.",
+        "description": "As an action you may talk a Being through a breathing exercise to reduce their stress by 1 point per resource point you spend.",
         "attributes": [
             {
-                "type": "onAction",
-                "effectId": "efct_removestress"
+                "type": 3,
+                "value": "onAction"
             },
             {
-                "type": "resourcePoolSkill",
-                "value": 1
+                "type": 4,
+                "targetId": "efct_removestress"
             },
             {
-                "type": "reset",
-                "cooldownId": "cdwn_debrief"
+                "type": 5,
+                "targetId": "cdwn_debrief"
+            },
+            {
+                "type": 6,
+                "targetId": "skl_fieldmedic",
+                "value": "1"
             }
-        ]
+        ],
+        "tags": ["faction_all", "era_all", "skl_fieldmedic"]
     },
     {
         "id": "abl_inspiration",
-        "skillId": "skl_leadership",
         "name": "Inspiration",
-        "description": "",
-        "isElite": false,
+        "blurb": "Grant double turns to 3 Beings for a round.",
+        "description": "As an action you can speak to 3 Beings that can hear you, motivating and inspiring them. For 1 Round, these Beings will have Double Turns.",
         "attributes": [
             {
-                "type": "onAction",
-                "effectId": "efct_doubleturn"
+                "type": 3,
+                "value": "onAction"
             },
             {
-                "type": "targets",
-                "value": 3
+                "type": 4,
+                "targetId": "efct_doubleturn"
             },
             {
-                "type": "reset",
-                "cooldownId": "cdwn_perengagement"
+                "type": 5,
+                "targetId": "cdwn_perengagement"
+            },
+            {
+                "type": 7,
+                "value": "3"
+            },
+            {
+                "type": 8,
+                "targetId": "dur_rounds",
+                "value": "1"
             }
-        ]
+        ],
+        "tags": ["faction_all", "era_all", "skl_leadership"]
     },
     {
         "id": "abl_mozambiquedrill",
-        "skillId": "skl_weaponstraining",
         "name": "Mozambique Drill",
-        "description": "",
-        "isElite": false,
+        "blurb": "Make three weapon attacks with the chance of killing the Target instantly.",
+        "description": "Spend 2 Actions to make three weapon attacks against a Being. If all three attacks hit, the creature is killed instantly regardless of it's remaining HP.",
         "attributes": [
             {
-                "type": "onAction",
-                "effectId": "efct_trippleattack"
+                "type": 3,
+                "value": "onAction"
             },
             {
-                "type": "costActions",
-                "value": 2
+                "type": 4,
+                "targetId": "efct_trippleattack_instakill"
             },
             {
-                "type": "onSuccess",
-                "effectId": "efct_instakill",
-                "condition": "allAttacksHit"
+                "type": 5,
+                "targetId": "cdwn_debrief"
             },
             {
-                "type": "reset",
-                "cooldownId": "cdwn_debrief"
+                "type": 9,
+                "value": "2"
             }
-        ]
+        ],
+        "tags": ["faction_all", "era_all", "skl_weaponstraining"]
     }
 ]

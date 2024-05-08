@@ -4,13 +4,35 @@
         "name": "Marksman",
         "blurb": "+1 to Accuracy Bonus",
         "description": "",
-        "score": 2
+        "attributes": [
+            {
+                "type": 1,
+                "value": "2"
+            },
+            {
+                "type": 2,
+                "targetId": "tests_accuracy",
+                "value": "1"
+            }
+        ],
+        "tags": ["faction_all", "era_all"]
     },
     {
         "id": "tlfl_sociallyawkward",
         "name": "Socially Awkward",
         "blurb": "-1 to Social Interaction Tests",
         "description": "",
-        "score": -2
+        "attributes": [
+            {
+                "type": 1,
+                "value": "-2"
+            },
+            {
+                "type": 2,
+                "targetId": "tests_social",
+                "value": "-1"
+            }
+        ],
+        "tags": ["faction_all", "era_all"]
     }
 ]
