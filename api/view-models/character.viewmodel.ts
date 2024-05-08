@@ -1,3 +1,4 @@
+import { CharacterDetailsViewModel } from "./characterDetails.viewmodel";
 import { EquipableViewModel } from "./equipable.viewmodel";
 import { SkillViewModel } from "./skill.viewmodel";
 import { SurvivabilityViewModel } from "./survivability.viewmodel";
@@ -5,12 +6,11 @@ import { SurvivabilityViewModel } from "./survivability.viewmodel";
 export class CharacterViewModel {
     id: string = '';
     userId: string = '';
-    name: string = '';
-    bio: string = '';
-    raceId: string = '';
+    
     factionId: string = '';
     eraId: string = '';
-    imageUrl: string = '';
+
+    details: CharacterDetailsViewModel = new CharacterDetailsViewModel();
     survivability: SurvivabilityViewModel = new SurvivabilityViewModel();
     talentIds: string[] = [];
     equipment: EquipableViewModel[] = [];
