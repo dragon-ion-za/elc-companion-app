@@ -3,25 +3,23 @@
         "id": "itm_pistol",
         "name": "Pistol",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_sidearm"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "mod",
-                "slot": "barrel"
+                "type": 11,
+                "value": "mod_barrel"
             },
             {
-                "type": "onAction",
-                "effectId": "efct_attack",
-                "value": 1
-            }
-        ],
-        "containers": [
+                "type": 3,
+                "value": "onAction"
+            },
             {
-                "id": "root",
-                "slot": "sidearm"
+                "type": 4,
+                "targetId": "efct_attack"
             }
         ]
     },
@@ -29,25 +27,23 @@
         "id": "itm_riflear",
         "name": "Rifle (AR Platform)",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_main", "slot_sling"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "mod",
-                "slot": "barrel"
+                "type": 11,
+                "value": "mod_barrel"
             },
             {
-                "type": "onAction",
-                "effectId": "efct_attack",
-                "value": 1
-            }
-        ],
-        "containers": [
+                "type": 3,
+                "value": "onAction"
+            },
             {
-                "id": "root",
-                "slot": "main,sling"
+                "type": 4,
+                "targetId": "efct_attack"
             }
         ]
     },
@@ -55,21 +51,19 @@
         "id": "itm_nvg",
         "name": "Night Vision Goggles",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_head"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "onAction",
-                "effectId": "efct_togglenightvision",
-                "value": 1
-            }
-        ],
-        "containers": [
+                "type": 3,
+                "value": "onAction"
+            },
             {
-                "id": "root",
-                "slot": "head"
+                "type": 4,
+                "targetId": "efct_togglenightvision"
             }
         ]
     },
@@ -77,20 +71,15 @@
         "id": "itm_beltg1",
         "name": "Basic Grenade Belt",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_belt"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "container",
-                "slot": "grenade"
-            }
-        ],
-        "containers": [
-            {
-                "id": "root",
-                "slot": "belt"
+                "type": 11,
+                "value": "slot_grenade"
             }
         ]
     },
@@ -98,42 +87,36 @@
         "id": "itm_bodyarmour",
         "name": "Basic Body Armour",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_chest"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "armour",
-                "value": 1
-            }
-        ],
-        "containers": [
-            {
-                "id": "root",
-                "slot": "chest"
+                "type": 2,
+                "targetId": "stat_mitigation",
+                "value": "1"
             }
         ]
     },
     {
         "id": "itm_knife",
-        "name": "Tacticle Knife",
+        "name": "Tactical Knife",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_knife"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "onAction",
-                "effectId": "efct_attack",
-                "value": 1
-            }
-        ],
-        "containers": [
+                "type": 3,
+                "value": "onAction"
+            },
             {
-                "id": "root",
-                "slot": "knife"
+                "type": 4,
+                "targetId": "efct_attack"
             }
         ]
     },
@@ -141,20 +124,15 @@
         "id": "itm_stimrig1",
         "name": "Basic Stims Belt",
         "description": "",
+        "tags": ["faction_all", "era_past", "era_nearfuture", "era_farfuture", "slot_rig"],
         "attributes": [
             {
-                "type": "cost",
-                "value": 1
+                "type": 10,
+                "value": "1"
             },
             {
-                "type": "container",
-                "slot": "stims"
-            }
-        ],
-        "containers": [
-            {
-                "id": "root",
-                "slot": "rig"
+                "type": 11,
+                "value": "slot_stim"
             }
         ]
     }

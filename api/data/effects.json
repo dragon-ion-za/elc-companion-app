@@ -14,13 +14,19 @@
     {
         "id": "efct_doubleturn",
         "title": "Double Turn",
-        "blurb": "Grant beings an aditional turn this round.",
-        "description": "You may target up to 3 beings to grant them an aditional turn this round. The beings must be able to hear you."
+        "blurb": "Grant beings an additional turn this round.",
+        "description": "You may target up to 3 beings to grant them an additional turn this round. The beings must be able to hear you."
     },
     {
-        "id": "efct_trippleattack",
-        "title": "Tripple Attack",
+        "id": "efct_tripleattack",
+        "title": "Triple Attack",
         "blurb": "You may make three consecutive attacks against a target.",
         "description": "You may attack a target three times. Each attack is treated as it's own Attack Action and an Accuracy Roll must be made for each."
+    },
+    {
+        "id": "efct_tripleattack_instakill",
+        "title": "Triple Attack",
+        "blurb": "You may make three consecutive attacks against a target. If all three hit, the target dies instantly.",
+        "description": "You may attack a target three times. Each attack is treated as it's own Attack Action and an Accuracy Roll must be made for each. If all three attacks hit, the target dies regardless of it's remaining HP."
     }
 ]

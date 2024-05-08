@@ -14,5 +14,7 @@ export enum AttributeTypes {
     ResourcePool_SkillMultiplier = 6,
     NumberOfTargets = 7,
     Duration = 8,
-    ActionCost = 9
+    ActionCost = 9,
+    RequisitionCost = 10,
+    Slot = 11
 }

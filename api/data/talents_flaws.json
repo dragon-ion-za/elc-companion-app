@@ -11,7 +11,7 @@
             },
             {
                 "type": 2,
-                "targetId": "tests_accuracy",
+                "targetId": "tsts_accuracy",
                 "value": "1"
             }
         ],
@@ -29,7 +29,7 @@
             },
             {
                 "type": 2,
-                "targetId": "tests_social",
+                "targetId": "tsts_social",
                 "value": "-1"
             }
         ],
