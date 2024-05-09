@@ -1,6 +1,7 @@
 import { ItemModel } from "../models/item.model";
+import { SkillModel } from "../models/skill.model";
 import { ItemViewModel } from "../view-models/item.viewmodel";
-import { LookupViewModel } from "../view-models/lookup.viewmodel";
+import { SkillViewModel } from "../view-models/skill.viewmodel";
 import { readFile } from "./read-file.service";
 
 const config = require('config');
@@ -8,24 +9,24 @@ const config = require('config');
 class LookupDataService {
     private readonly localCache: Record<string, any> = [];
 
-    public getRaces() : LookupViewModel[] {
-        return this.getFromFileOrCache('races', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
+    public getRaces() : ItemViewModel[] {
+        return this.getFromFileOrCache('races', (model: ItemModel) => model as ItemViewModel);
     }
 
-    public getFactions() : LookupViewModel[] {   
-        return this.getFromFileOrCache('factions', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
+    public getFactions() : ItemViewModel[] {   
+        return this.getFromFileOrCache('factions', (model: ItemModel) => model as ItemViewModel);
     }
 
-    public getEras() : LookupViewModel[] {   
-        return this.getFromFileOrCache('eras', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
+    public getEras() : ItemViewModel[] {   
+        return this.getFromFileOrCache('eras', (model: ItemModel) => model as ItemViewModel);
     }
 
     public getTalentsFlaws() : ItemViewModel[] {   
         return this.getFromFileOrCache('talents_flaws', (model: ItemModel) => model as ItemViewModel);
     }
 
-    public getSkills() : LookupViewModel[] {   
-        return this.getFromFileOrCache('skills', (model: any) => new LookupViewModel(model.id, model.name, model.blurb, model.score ?? 0));
+    public getSkills() : SkillViewModel[] {   
+        return this.getFromFileOrCache('skills', (model: SkillModel) => model as SkillViewModel);
     }
 
     public getItems() : ItemViewModel[] {   
