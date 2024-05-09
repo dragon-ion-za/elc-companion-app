@@ -3,12 +3,11 @@ part 'attribute.g.dart';
 
 @JsonSerializable()
 class Attribute {
-  final String type;
-  final String? slot;
-  final String? effectId;
-  final num? value;
+  final int type;
+  final String? targetId;
+  final String? value;
 
-  Attribute(this.type, this.slot, this.effectId, this.value);
+  Attribute(this.type, this.targetId, this.value);
 
   factory Attribute.fromJson(Map<String, dynamic> json) =>
       _$AttributeFromJson(json);

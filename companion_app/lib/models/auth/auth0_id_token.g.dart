@@ -15,9 +15,9 @@ Auth0IdToken _$Auth0IdTokenFromJson(Map<String, dynamic> json) => Auth0IdToken(
       iss: json['iss'] as String,
       sub: json['sub'] as String,
       aud: json['aud'] as String,
-      iat: json['iat'] as int,
-      exp: json['exp'] as int,
-      authTime: json['auth_time'] as int?,
+      iat: (json['iat'] as num).toInt(),
+      exp: (json['exp'] as num).toInt(),
+      authTime: (json['auth_time'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$Auth0IdTokenToJson(Auth0IdToken instance) =>

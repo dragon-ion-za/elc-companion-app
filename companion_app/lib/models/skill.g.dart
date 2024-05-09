@@ -14,6 +14,6 @@ Skill _$SkillFromJson(Map<String, dynamic> json) => Skill(
 
 Map<String, dynamic> _$SkillToJson(Skill instance) => <String, dynamic>{
       'id': instance.id,
-      'progression': instance.progression,
       'abilityIds': instance.abilityIds,
+      'progression': instance.progression,
     };

@@ -7,11 +7,12 @@ part 'item.g.dart';
 class Item {
   final String id;
   final String name;
+  final String? blurb;
   final String? description;
   final List<Attribute> attributes;
-  final List<Container> containers;
+  final List<String> tags;
 
-  Item(this.id, this.name, this.description, this.attributes, this.containers);
+  Item(this.id, this.name, this.blurb, this.description, this.attributes, this.tags);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
